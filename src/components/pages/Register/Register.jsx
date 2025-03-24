@@ -70,7 +70,7 @@ return (
             </p>
         </div>
         <div className={styles['register-image']}>
-            <img src="./flowers.png" alt="Register background" />
+        <img src="/images/flowers.png" alt="Login background" />
         </div>
     </section>
 );

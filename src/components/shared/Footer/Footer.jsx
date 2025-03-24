@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './Footer.module.css';
+import { Link } from 'react-router-dom';
+import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 
 export default function () {
   return (
@@ -7,25 +9,32 @@ export default function () {
       <div className={styles['footer-content']}>
         <div className={styles['footer-logo']}>
           <h2>ReNew</h2>
-          <p>Despite the rise<br />the rise<br />fast fashion<br />making</p>
+          <p>
+            ReNew is your trusted platform for buying and selling secondhand products. 
+            We believe in sustainability and giving products a second life, reducing waste, 
+            and promoting a greener future.
+          </p>
         </div>
         <div className={styles['footer-contacts']}>
           <h3>CONTACTS</h3>
           <p>
-            Despite the rise of fast fashion making the dollar $ amounts tick
-            upward on your secondhand clothing, it is still much more affordable
-            than brand new clothing.
+            Have questions or need assistance? <i>Reach out to us at</i>:
+            <br />
+            Email: <a href="mailto:support@renew.com" style={{ color: "black" }}>support@renew.com</a>
+            <br />
+            Phone: +359 887 4567
+            <br />
+            Address: 123 Bulgarian Bul Lane, Sofia;
           </p>
         </div>
         <div className={styles['social-links']}>
-          <a href="#"><img src="facebook-icon.png" alt="f" /></a>
-          <a href="#"><img src="instagram-icon.png" alt="i" /></a>
-          <a href="#"><img src="twitter-icon.png" alt="t" /></a>
-          <a href="#">^</a>
+          <Link to="https://www.facebook.com/luben.stefano/?locale=bg_BG"><FaFacebookF color='#e6aa65' size={"30px"}/></Link>
+          <Link to="https://www.instagram.com/lubenstefano/"><FaInstagram color='#e6aa65' size={"30px"}/></Link>
+          <Link to="https://x.com/"><FaTwitter color='#e6aa65' size={"30px"} /></Link>
         </div>
       </div>
       <p className={styles['footer-note']}>
-        ReNew is place to buy and sell second-hand products. 2025 ©
+        Made by Luben-Stefano for Softuni React Course. 2025 ©
       </p>
     </footer>
   );
