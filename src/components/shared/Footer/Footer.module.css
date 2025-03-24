@@ -1,0 +1,58 @@
+.footer {
+  padding: 40px 80px;
+  background-color: #fff6df;
+  text-align: left;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-logo h2 {
+  font-family: "Arvo", serif;
+  font-style: italic;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.footer-logo p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.footer-contacts h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.footer-contacts p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.social-links {
+  display: flex;
+  gap: 16px;
+}
+
+.social-links a img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e6aa65;
+  padding: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-note {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #000;
+}
