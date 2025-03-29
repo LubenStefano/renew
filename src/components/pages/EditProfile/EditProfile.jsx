@@ -17,7 +17,7 @@ export default function EditProfile() {
             <input type="tel" id="phone" value="0885 765 765" required />
           </div>
           <div className={styles['form-group']}>
-            <label for="profile-picture">profile picture:</label>
+            <label for="profile-picture">profile picture: </label>
             <input
               type="url"
               id="profile-picture"
