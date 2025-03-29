@@ -1,0 +1,65 @@
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 70px auto;
+    max-width: 950px;
+    background-color: #f5f5f5;
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-profile-form {
+    width: 100%;
+  }
+  
+  .edit-profile-form h1 {
+    font-family: "Arvo", serif;
+    font-size: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .edit-profile-form h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .edit-profile-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .edit-profile-form label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .edit-profile-form input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    border-radius: 15px;
+  }
+  
+  .edit-profile-form button {
+    width: 100%;
+    padding: 20px;
+    background-color: #e6aa65;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-profile-form button:hover {
+    background-color: #d69f5f;
+  }
+  

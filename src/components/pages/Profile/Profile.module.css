@@ -1,0 +1,125 @@
+.profile-page {
+    padding: 50px 100px;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border-radius: 50%;
+  }
+  
+  .profile-info {
+    flex: 1;
+    margin-left: 20px;
+  }
+  
+  .profile-info h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  
+  .profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .profile-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .edit-profile {
+    background-color: #e6aa65;
+    color: white;
+  }
+  
+  .edit-profile:hover {
+    background-color: #d69f5f;
+  }
+  
+  .delete-profile {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .delete-profile:hover {
+    background-color: #c0392b;
+  }
+  
+  .profile-content {
+    margin-top: 40px;
+  }
+  
+  .products-section,
+  .saved-section {
+    margin-bottom: 40px;
+  }
+  
+  .products-section h3,
+  .saved-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+  
+  .product {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .product h3 {
+    font-size: 20px;
+    margin: 16px 0;
+  }
+  
+  .product p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 16px;
+  }
+  
+  .product button {
+    padding: 10px 20px;
+    background-color: #e6aa65;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .product button:hover {
+    background-color: #d69f5f;
+  }
+  

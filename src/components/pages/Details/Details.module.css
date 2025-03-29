@@ -1,0 +1,102 @@
+.product-details {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  .big-container {
+    background-color: #f5f5f5;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .product-details h1 {
+    font-family: "Arvo", serif;
+    font-size: 40px;
+    margin-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .product-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .product-image img {
+    max-width: 400px;
+    border-radius: 10px;
+  }
+  
+  .product-info {
+    flex: 1;
+  }
+  
+  .product-info p {
+    margin: 10px 0;
+  }
+  
+  .product-info .price span {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .description,
+  .category {
+    margin-top: 20px;
+  }
+  
+  .description h2,
+  .category h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .actions .call {
+    background-color: orange;
+    color: white;
+  }
+  
+  .actions .text {
+    background-color: #f0ad4e;
+    color: white;
+  }
+  
+  .actions .email {
+    background-color: #5bc0de;
+    color: white;
+  }
+  
+  .actions .save {
+    background-color: #c7c7c7;
+    color: black;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #e6aa65;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 60px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #d69f5f;
+  }
+  
+  a:hover {
+    color: #e6aa65;
+    font-style: italic;
+  }
+  

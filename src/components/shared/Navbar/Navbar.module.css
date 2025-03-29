@@ -1,0 +1,46 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 25px;
+}
+
+.logo {
+  font-family: "Arvo", serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 45px;
+  cursor: pointer;
+}
+
+.logo a{
+  text-decoration: none;
+  color: #000;
+  transition: 0.2s;
+}
+
+.logo a:hover {
+  color: #e6aa65;
+  font-style: italic;
+  font-size: 50px;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.activeStyle {
+  color: #e6aa65;
+  font-style: italic;
+}
