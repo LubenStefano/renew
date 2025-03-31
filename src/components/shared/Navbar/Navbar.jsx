@@ -9,7 +9,7 @@ export default function Navbar() {
         <nav className={styles.nav}>
           <ul className={styles.navList}>
             <li><NavLink to="/" className={({isActive}) => isActive ? styles.activeStyle : undefined}>HOME</NavLink></li>
-            <li><NavLink to="/products" className={({isActive}) => isActive ? styles.activeStyle : undefined} >PRODUCTS</NavLink></li>
+            <li><NavLink to="/offers" className={({isActive}) => isActive ? styles.activeStyle : undefined} >PRODUCTS</NavLink></li>
             <li><NavLink to="/login" className={({isActive}) => isActive ? styles.activeStyle : undefined} >LOGIN</NavLink></li>
             <li><NavLink to="/register" className={({isActive}) => isActive ? styles.activeStyle : undefined} >REGISTER</NavLink></li>
           </ul>

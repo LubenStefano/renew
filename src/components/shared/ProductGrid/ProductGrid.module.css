@@ -1,0 +1,64 @@
+.product-grid {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 20px;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.product-grid-carousel {
+  display: flex; /* Use flexbox for row layout */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  flex-direction: row; /* Align items in a row */
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+  width: 100%;
+}
+
+.product {
+  text-align: center;
+  padding: 20px;
+  width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product h3 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 16px 0;
+  overflow-wrap: break-word;
+}
+
+.product p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 16px;
+  overflow-wrap: break-word;
+}
+
+.product button {
+  padding: 10px 20px;
+  background-color: #e6aa65;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.product button:hover {
+  background-color: #d69f5f;
+}

@@ -2,14 +2,6 @@
     padding: 50px 100px;
     text-align: left; 
   }
-  
-  .products-page h2 {
-    font-size: 40px;
-    margin-bottom: 32px;
-    font-family: "Arvo", serif;
-    font-weight: 400;
-  }
-  
   .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -17,47 +9,11 @@
     justify-items: center;
   }
   
-  .product {
-    text-align: center;
-    padding: 20px;
-    width: 300px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .product img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .product h3 {
-    font-size: 20px;
+  .products-page h2 {
+    font-size: 40px;
+    margin-bottom: 32px;
+    font-family: "Arvo", serif;
     font-weight: 400;
-    margin: 16px 0;
-  }
-  
-  .product p {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 16px;
-  }
-  
-  .product button {
-    padding: 10px 20px;
-    background-color: #e6aa65;
-    border: none;
-    cursor: pointer;
-    color: white;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  
-  .product button:hover {
-    background-color: #d69f5f;
   }
   
   .filter-dropdown {
@@ -114,4 +70,12 @@
     color: #d69f5f;
     margin-bottom: 16px;
     font-style: italic;
+  }
+
+  .remove-filter {
+    color: orange; 
+    font-style: italic; 
+    cursor: pointer; 
+    margin-left: 10px;
+    font-size: 15px;
   }

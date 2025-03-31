@@ -1,5 +1,12 @@
-
 a:hover {
   color: #e6aa65;
   font-style: italic;
+}
+
+body.main-page {
+  background-color: #fff6df;
+}
+
+body.default-page {
+  background-color: #ffffff;
 }

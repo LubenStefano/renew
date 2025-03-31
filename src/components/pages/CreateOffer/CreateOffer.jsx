@@ -1,28 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './CreateOffer.module.css';
+import { useNavigate } from 'react-router';
+import { useCreateOffer } from '../../../hooks/useOffers';
 
 export default function CreateOffer() {
-    const [formData, setFormData] = useState({
-        productName: '',
-        condition: '',
-        description: '',
-        productImage: '',
-        productCategory: '',
-    });
+    const navigate = useNavigate();
+    const { create } = useCreateOffer(); 
 
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [id]: value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Data:', formData);
-        // Add further processing logic here
-    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const offerData = Object.fromEntries(formData);
+    
+        await create(offerData);
+        navigate("/offers");
+      };
 
     return (
         <section className={styles['create-offer-container']}>
@@ -31,20 +23,18 @@ export default function CreateOffer() {
                 <form onSubmit={handleSubmit}>
                     <div className={styles['form-sections']}>
                         <div className={styles['form-section']}>
-                            <label htmlFor="productName">product name:</label>
+                            <label htmlFor="name">product name:</label>
                             <input
                                 type="text"
-                                id="productName"
+                                id="name"
+                                name="name"
                                 placeholder="e.g: Iphone 11 pro, eSIM"
-                                value={formData.productName}
-                                onChange={handleChange}
                                 required
                             />
                             <label htmlFor="condition">condition:</label>
                             <select
                                 id="condition"
-                                value={formData.condition}
-                                onChange={handleChange}
+                                name="condition"
                                 required
                             >
                                 <option value="" disabled>
@@ -56,37 +46,42 @@ export default function CreateOffer() {
                             <label htmlFor="description">description:</label>
                             <textarea
                                 id="description"
+                                name="description"
                                 placeholder="e.g: I am selling, because I have new phone..."
-                                value={formData.description}
-                                onChange={handleChange}
                                 required
                             ></textarea>
                         </div>
                         <div className={styles['form-section']}>
-                            <label htmlFor="productImage">product image:</label>
+                            <label htmlFor="img">product image:</label>
                             <input
                                 type="url"
-                                id="productImage"
+                                id="img"
+                                name="img"
                                 placeholder="e.g: URL"
-                                value={formData.productImage}
-                                onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="productCategory">product category:</label>
+                            <label htmlFor="category">product category:</label>
                             <select
-                                id="productCategory"
-                                value={formData.productCategory}
-                                onChange={handleChange}
+                                id="category"
+                                name="category"
                                 required
                             >
                                 <option value="" disabled>
                                     select
                                 </option>
+                                <option value="home">Home</option>
+                                <option value="clothes">Clothes</option>
+                                <option value="vehicles">Vehicles</option>
                                 <option value="electronics">Electronics</option>
-                                <option value="furniture">Furniture</option>
-                                <option value="clothing">Clothing</option>
-                                <option value="other">Other</option>
                             </select>
+                            <label htmlFor="price">price:</label>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                placeholder="e.g: 500"
+                                required
+                            />
                         </div>
                     </div>
                     <button type="submit">CREATE POST</button>

@@ -1,51 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Main.module.css';
 import Button from '../../shared/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useLatestOffers } from '../../../hooks/useOffers';
+import ProductGrid from '../../shared/ProductGrid/ProductGrid';
 
 export default function Main() {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        document.body.style.backgroundColor = '#fff6df';
-        return () => {
-            document.body.style.backgroundColor = '#ffffff';
-        };
-    }, []);
 
     const seeCollection = () => {
         navigate('/products');
     };
 
     const seeProduct = (id) => {
-        navigate(`/details/${id}`);
+        navigate(`offers/details/${id}`);
     };
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
-    const products = [
-        { id: 1, title: "The original sofa", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 2, title: "The original car", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 3, title: "The original sofa", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 4, title: "The original sofa", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 5, title: "The original sofa", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 6, title: "The original car", img: "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 7, title: "The original sofa", img: "https://cdn.shopify.com/s/files/1/0310/7487/7577/products/00722-Cars-_Blackstone__Rounded_13457a25-19b0-4840-9fa0-bb5cddd25a3c.webp?v=1673448458", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-        { id: 8, title: "The original car", img: "https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/25DAB0174DD0628DA9F43E863EE46348131275F683AF7A8F74AA7BEDAE39E777/scale?width=440&aspectRatio=1.78&format=webp", description: "ReNew is a place to buy and sell secondhand products. ReNew product now!" },
-    ];
+    const { latestOffers: products } = useLatestOffers();
 
     const handleNext = () => {
-        if (isAnimating) return;
+        if (isAnimating || products.length <= 4) return;
         setIsAnimating(true);
         setTimeout(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 4) % products.length);
             setIsAnimating(false);
-        }, 300); 
+        }, 300);
     };
 
     const handlePrev = () => {
-        if (isAnimating) return;
+        if (isAnimating || products.length <= 4) return;
         setIsAnimating(true);
         setTimeout(() => {
             setCurrentIndex((prevIndex) => (prevIndex - 4 + products.length) % products.length);
@@ -53,8 +39,17 @@ export default function Main() {
         }, 300);
     };
 
+    const visibleProducts = [];
+    for (let i = 0; i < 4; i++) {
+        const productIndex = (currentIndex + i) % products.length;
+        if (!visibleProducts.includes(products[productIndex])) {
+            visibleProducts.push(products[productIndex]);
+        }
+    }
+    console.log(visibleProducts);
+
     return (
-        <main>
+        <main className="main-page">
             <section className={styles.hero}>
                 <div className={styles['hero-content']}>
                     <h1>Why ReNew?</h1>
@@ -68,31 +63,27 @@ export default function Main() {
             </section>
 
             <nav className={styles.categories}>
-                <Link to="/products?category=Home&Garden">HOME & GARDEN</Link>
-                <Link to="/products?category=Clothes">CLOTHES</Link>
-                <Link to="/products?category=Vehicles">VEHICLES</Link>
-                <Link to="/products?category=Electronics">ELECTRONICS</Link>
+                <Link to="/offers?category=home">HOME</Link>
+                <Link to="/offers?category=clothes">CLOTHES</Link>
+                <Link to="/offers?category=vehicles">VEHICLES</Link>
+                <Link to="/offers?category=electronics">ELECTRONICS</Link>
             </nav>
 
-            <section className={styles['latest-products']}>
-                <h2>Our latest products</h2>
-                <div
-                    className={`${styles['product-carousel']} ${isAnimating ? styles['animating'] : ''}`}
-                >
-                    {products.slice(currentIndex, currentIndex + 4).map((product) => (
-                        <div key={product.id} className={styles.product}>
-                            <img src={product.img} alt={product.title} />
-                            <h3>{product.title}</h3>
-                            <p>{product.description}</p>
-                            <Button text="SEE PRODUCT" onClick={() => seeProduct(product.id)} className={"show-more"} />
-                        </div>
-                    ))}
-                </div>
-                <div className={styles['carosel-controls']}>
-                    <span id="prev" onClick={handlePrev}>{'<'}</span>
-                    <span id="next" onClick={handleNext}>{'>'}</span>
-                </div>
-            </section>
+            {products.length > 0 && (
+                <section className={styles['latest-products']}>
+                    <h2>Our latest products</h2>
+                    <div className={styles['product-carousel']}>
+                        <ProductGrid
+                            offers={visibleProducts}
+                            onProductClick={seeProduct}
+                        />
+                    </div>
+                    <div className={styles['carosel-controls']}>
+                        <span id="prev" onClick={handlePrev}>{'<'}</span>
+                        <span id="next" onClick={handleNext}>{'>'}</span>
+                    </div>
+                </section>
+            )}
 
             <section className={styles.about}>
                 <h2>About</h2>
