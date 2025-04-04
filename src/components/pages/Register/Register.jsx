@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import styles from './Register.module.css';
+import React, { useState } from "react";
+import { useRegister } from "../../../hooks/useAuth";
+import styles from "./Register.module.css";
 
 export default function Register() {
     const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        contactEmail: '',
-        profilePicture: '',
-        email: '',
-        password: '',
-        rePassword: '',
+        name: "",
+        phone: "",
+        profilePicture: "",
+        email: "",
+        password: "",
+        rePassword: "",
     });
+    const [passwordError, setPasswordError] = useState(null);
+    const { register, error } = useRegister();
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -20,19 +22,24 @@ export default function Register() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        // Add further processing logic here
+        if (formData.password !== formData.rePassword) {
+            setPasswordError("Passwords do not match.");
+            return;
+        }
+        setPasswordError(null);
+        const { email, password, rePassword, ...additionalData } = formData;
+        await register(email, password, additionalData);
     };
 
     return (
-        <section className={styles['register-container']}>
-            <div className={styles['register-form']}>
+        <section className={styles["register-container"]}>
+            <div className={styles["register-form"]}>
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
-                    <div className={styles['form-sections']}>
-                        <div className={styles['form-section']}>
+                    <div className={styles["form-sections"]}>
+                        <div className={styles["form-section"]}>
                             <h3>PERSONAL INFO:</h3>
                             <label htmlFor="name">name:</label>
                             <input
@@ -52,15 +59,6 @@ export default function Register() {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="contactEmail">contact email:</label>
-                            <input
-                                type="email"
-                                id="contactEmail"
-                                placeholder="e.g: example@example.eg"
-                                value={formData.contactEmail}
-                                onChange={handleChange}
-                                required
-                            />
                             <label htmlFor="profilePicture">profile picture:</label>
                             <input
                                 type="url"
@@ -70,7 +68,7 @@ export default function Register() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className={styles['form-section']}>
+                        <div className={styles["form-section"]}>
                             <h3>LOGIN CREDENTIALS:</h3>
                             <label htmlFor="email">email:</label>
                             <input
@@ -90,7 +88,7 @@ export default function Register() {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="rePassword">re-password:</label>
+                            <label htmlFor="rePassword">re-enter password:</label>
                             <input
                                 type="password"
                                 id="rePassword"
@@ -103,11 +101,13 @@ export default function Register() {
                     </div>
                     <button type="submit">REGISTER</button>
                 </form>
+                {passwordError && <p className={styles["error"]}>{passwordError}</p>}
+                {error && <p className={styles["error"]}>{error}</p>}
                 <p>
                     Have an account? <a href="#">Login now</a>
                 </p>
             </div>
-            <div className={styles['register-image']}>
+            <div className={styles["register-image"]}>
                 <img src="/images/flowers.png" alt="Login background" />
             </div>
         </section>

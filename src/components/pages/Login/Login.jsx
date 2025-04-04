@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import styles from './Login.module.css';
+import React, { useState } from "react";
+import { useLogin } from "../../../hooks/useAuth";
+import styles from "./Login.module.css";
 
 export default function Login() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const { login, error } = useLogin();
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -15,15 +14,14 @@ export default function Login() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        // Add further processing logic here
+        await login(formData.email, formData.password);
     };
 
     return (
-        <section className={styles['login-container']}>
-            <div className={styles['login-form']}>
+        <section className={styles["login-container"]}>
+            <div className={styles["login-form"]}>
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="email">email:</label>
@@ -46,11 +44,12 @@ export default function Login() {
                     />
                     <button type="submit">LOGIN</button>
                 </form>
+                {error && <p className={styles["error"]}>{error}</p>}
                 <p>
                     Don't have an account? <a href="#">Register now</a>
                 </p>
             </div>
-            <div className={styles['login-image']}>
+            <div className={styles["login-image"]}>
                 <img src="/images/flowers.png" alt="Login background" />
             </div>
         </section>

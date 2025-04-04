@@ -1,6 +1,6 @@
-import { addDoc, collection, getDocs, query, orderBy, limit, where, getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
-
+import { addDoc, collection, getDocs, query, orderBy, limit, where, getDoc, doc, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase";
 
 export const request = {
   async getAll(collectionName) {
@@ -28,5 +28,33 @@ export const request = {
     } else {
       throw new Error("No such document!");
     }
+  },
+
+  async registerUser(email, password, additionalData) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const userDocRef = doc(db, "users", user.uid);
+    await setDoc(userDocRef, {
+      id: user.uid,
+      createdAt: new Date().toISOString(), 
+      email,
+      ...additionalData
+    });
+    return user;
+  },
+
+  async loginUser(email, password) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+      throw new Error("User data not found in Firestore.");
+    }
+    return { id: user.uid, email: user.email, ...userDoc.data() }; // Return full user data
+  },
+
+  async logoutUser() {
+    await auth.signOut();
   },
 };

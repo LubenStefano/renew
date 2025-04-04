@@ -2,15 +2,17 @@ import React from 'react';
 import styles from './Details.module.css';
 import { useOffer } from '../../../hooks/useOffers';
 import { useParams } from 'react-router';
+import { useUser } from '../../../context/UserContext';
 
 export default function Details() {
 
   const { id } = useParams();
   const { offer } = useOffer(id);
+  const { user } = useUser(); 
   console.log(offer);
 
   if (!offer) {
-    return <p>Loading offer details...</p>; // Render a loading state if offer is null
+    return <p>Loading offer details...</p>;
   }
 
   return (
@@ -27,11 +29,11 @@ export default function Details() {
             </div>
             <div className={styles["product-info"]}>
               <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
-              <p className={styles["seller"]}>SELLER: <span>Luben- Stefano</span></p>
+              <p className={styles["seller"]}>SELLER: <span>{offer.creator.name}</span></p>
               <p className={styles["contacts"]}>
                 contacts:<br />
-                gsm: 358 893 483<br />
-                email: lsf@abv.bg
+                gsm: {offer.creator.phone}<br />
+                email: {offer.creator.email}
               </p>
               <p className={styles["condition"]}>CONDITION: <span>{offer.condition}</span></p>
             </div>
@@ -47,10 +49,19 @@ export default function Details() {
             <p>{offer.category}</p>
           </div>
           <div className={styles["actions"]}>
-            <button className={styles["call"]}>CALL NOW</button>
-            <button className={styles["text"]}>TEXT NOW</button>
-            <button className={styles["email"]}>EMAIL</button>
-            <button className={styles["save"]}>SAVE OFFER</button>
+            {user?.id === offer.creator.id ? (
+              <>
+                <button className={styles["edit"]}>EDIT OFFER</button>
+                <button className={styles["delete"]}>DELETE OFFER</button>
+              </>
+            ) : (
+              <>
+                <button className={styles["call"]}>CALL NOW</button>
+                <button className={styles["text"]}>TEXT NOW</button>
+                <button className={styles["email"]}>EMAIL</button>
+                <button className={styles["save"]}>SAVE OFFER</button>
+              </>
+            )}
           </div>
         </div>
       </section>

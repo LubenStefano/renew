@@ -101,3 +101,17 @@
     font-style: italic;
   }
   
+  .edit{
+    background-color: #5cb85c;
+    color: white;
+  }
+  .delete{
+    background-color: #d9534f;
+    color: white;
+  }
+  .edit:hover{
+    background-color: #4cae4c;
+  }
+  .delete:hover{
+    background-color: #c9302c;
+  }

@@ -13,6 +13,7 @@ import Offers from './components/pages/Offers/Offers'
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/shared/Layout/Layout'
+import { UserProvider } from './context/UserContext'
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
 export default function Root() {
   return (
     <Router>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </Router>
   )
 }

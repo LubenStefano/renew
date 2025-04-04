@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { request } from "../utils/request";
+import { useUser } from "../context/UserContext";
 
 const collectionName = "offers";
 
@@ -35,8 +36,21 @@ export const useOffer = (offerId) => {
 };
 
 export const useCreateOffer = () => {
+    const { user } = useUser(); // Access user data from UserContext
+
     const create = async (offerData) => {
+        if (!user) {
+            throw new Error("User must be logged in to create an offer.");
+        }
+
         offerData.createdAt = new Date().toISOString();
+        offerData.creator = {
+            id: user.id,
+            name: user.name ,
+            email: user.email,
+            phone: user.phone , 
+        };
+
         return await request.create(collectionName, offerData);
     };
 
