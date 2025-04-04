@@ -1,19 +1,86 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Details.module.css';
-import { useOffer } from '../../../hooks/useOffers';
-import { useParams } from 'react-router';
+import { useOffer, useSaveOffer, useDeleteSavedOffer, useSavedOffers, useEditOffer, useDeleteOffer } from '../../../hooks/useOffers';
+import { useNavigate, useParams } from 'react-router';
 import { useUser } from '../../../context/UserContext';
+import Button from '../../shared/Button/Button';
 
 export default function Details() {
 
   const { id } = useParams();
   const { offer } = useOffer(id);
   const { user } = useUser(); 
+  const { saveOffer } = useSaveOffer();
+  const { deleteSavedOffer } = useDeleteSavedOffer();
+  const { savedOffers } = useSavedOffers();
+  const { remove } = useDeleteOffer();
+
+  const navigate = useNavigate();
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    if (savedOffers && offer) {
+      setIsSaved(savedOffers.some(savedOffer => savedOffer.id === offer.id));
+    }
+  }, [savedOffers, offer]);
+
   console.log(offer);
 
   if (!offer) {
     return <p>Loading offer details...</p>;
   }
+
+  const toggleSaveHandler = () => {
+    if (isSaved) {
+      deleteSavedOffer(offer.id)
+        .then(() => {
+          console.log("Offer unsaved successfully!");
+          setIsSaved(false);
+        })
+        .catch((error) => {
+          console.error("Error unsaving offer:", error);
+        });
+    } else {
+      saveOffer(offer.id)
+        .then(() => {
+          console.log("Offer saved successfully!");
+          setIsSaved(true);
+        })
+        .catch((error) => {
+          console.error("Error saving offer:", error);
+        });
+    }
+  };
+
+  const handleEmailClick = () => {
+    if (offer?.creator?.email) {
+      window.location.href = `mailto:${offer.creator.email}`;
+    }
+  };
+
+  const handleCallClick = () => {
+    if (offer?.creator?.phone) {
+      window.location.href = `tel:${offer.creator.phone}`;
+    }
+  };
+
+  const handleEditClick = () => {
+    navigate(`/offers/edit/${offer.id}`);
+  };
+
+  const handleDeleteClick = () => {
+    if (window.confirm("Are you sure you want to delete this offer?")) {
+      remove(offer.id)
+        .then(() => {
+          console.log("Offer deleted successfully!");
+          navigate("/profile");
+        })
+        .catch((error) => {
+          console.error("Error deleting offer:", error);
+        });
+    }
+  };
 
   return (
     <main>
@@ -51,15 +118,19 @@ export default function Details() {
           <div className={styles["actions"]}>
             {user?.id === offer.creator.id ? (
               <>
-                <button className={styles["edit"]}>EDIT OFFER</button>
-                <button className={styles["delete"]}>DELETE OFFER</button>
+                <Button text="EDIT OFFER" className={styles["edit"]} onClick={handleEditClick} />
+                <Button text="DELETE OFFER" className={styles["delete"]} onClick={handleDeleteClick} />
               </>
             ) : (
               <>
-                <button className={styles["call"]}>CALL NOW</button>
-                <button className={styles["text"]}>TEXT NOW</button>
-                <button className={styles["email"]}>EMAIL</button>
-                <button className={styles["save"]}>SAVE OFFER</button>
+                <Button text="CALL NOW" className={styles["call"]} onClick={handleCallClick} />
+                <Button text="TEXT NOW" className={styles["text"]} />
+                <Button text="EMAIL" className={styles["email"]} onClick={handleEmailClick} />
+                <Button
+                  onClick={toggleSaveHandler}
+                  text={isSaved ? "UNSAVE" : "SAVE NOW"}
+                  className={isSaved ? styles["unsave"] : styles["save"]}
+                />
               </>
             )}
           </div>

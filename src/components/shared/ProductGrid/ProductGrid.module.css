@@ -8,7 +8,7 @@
 
 .product-grid-carousel {
   display: flex; /* Use flexbox for row layout */
-  flex-wrap: nowrap; /* Prevent wrapping */
+  flex-wrap: wrap; /* Prevent wrapping */
   flex-direction: row; /* Align items in a row */
   gap: 40px;
   justify-content: center;
@@ -62,3 +62,4 @@
 .product button:hover {
   background-color: #d69f5f;
 }
+

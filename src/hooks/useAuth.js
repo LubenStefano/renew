@@ -74,3 +74,44 @@ export const useLogout = () => {
 
     return { logout, error };
 };
+
+export const useDeleteUser = () => {
+    const [error, setError] = useState(null);
+    const { user, setUser } = useUser(); // Access setUser from UserContext
+    const navigate = useNavigate();
+
+    const deleteUser = async () => {
+        try {
+            setError(null);
+            await request.deleteUser(user.id); // Assuming you have a deleteUser method in your request module
+            setUser(null); // Immediately clear user data in context
+            await request.logoutUser(); // Log out the user after deletion
+            navigate("/");
+        } catch (err) {
+            console.error("Delete user error:", err);
+            setError(err.message);
+        }
+    };
+
+    return { deleteUser, error };
+};
+
+export const useUpdateUser = () => {
+    const [error, setError] = useState(null);
+    const { user, setUser } = useUser(); // Access setUser from UserContext
+    const navigate = useNavigate();
+
+    const updateUser = async (updatedData) => {
+        try {
+            setError(null);
+            const updatedUser = await request.updateUser(user.id, updatedData); // Assuming updateUser returns the updated user data
+            setUser({ ...user, ...updatedUser }); // Immediately update user data in context
+            navigate("/profile"); // Redirect to profile page after update
+        } catch (err) {
+            console.error("Update user error:", err);
+            setError(err.message);
+        }
+    };
+
+    return { updateUser, error };
+};

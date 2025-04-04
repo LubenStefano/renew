@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     const updateUser = (userData) => {
-        setUser(userData);
+        setUser((prevUser) => ({ ...prevUser, ...userData })); // Merge new data with existing user data
     };
 
     useEffect(() => {
@@ -22,8 +22,11 @@ export const UserProvider = ({ children }) => {
                     setUser({
                         id: firebaseUser.uid,
                         email: firebaseUser.email,
-                        name: userDoc.data().name || "Unknown", // Add name
-                        phone: userDoc.data().phone || "N/A",  // Add phone
+                        name: userDoc.data().name ,
+                        phone: userDoc.data().phone , 
+                        profilePicture: userDoc.data().profilePicture,
+                        savedOffers: userDoc.data().savedOffers,
+                        createdAt: userDoc.data().createdAt,
                         ...userDoc.data(),
                     });
                 } else {

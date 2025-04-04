@@ -29,7 +29,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/offers/create" element={<CreateOffer />} />
         <Route path="/offers/edit/:id" element={<EditOffer />} />
-        <Route path="/profile/edit/:id" element={<EditProfile />} />
+        <Route path="/profile/edit/" element={<EditProfile />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <Footer />

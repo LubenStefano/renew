@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useUser } from '../../../context/UserContext';
+import { useUpdateUser } from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import styles from './EditProfile.module.css';
 
 export default function EditProfile() {
+    const { user } = useUser();
+    const { updateUser } = useUpdateUser();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: 'Ivan Petrov',
-        phone: '0885 765 765',
-        profilePicture: 'https://jhbaghjkug/asughtofj/36',
-        contactEmail: 'example@example.eg',
+        name: '',
+        phone: '',
+        profilePicture: '',
+        contactEmail: '',
     });
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                name: user.name || '',
+                phone: user.phone || '',
+                profilePicture: user.profilePicture || '',
+                contactEmail: user.email || '',
+            });
+        }
+    }, [user]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -17,10 +34,14 @@ export default function EditProfile() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        // Add further processing logic here
+        try {
+            await updateUser(formData);
+            navigate('/profile');
+        } catch (err) {
+            console.error('Error updating profile:', err);
+        }
     };
 
     return (
@@ -56,16 +77,6 @@ export default function EditProfile() {
                             id="profilePicture"
                             value={formData.profilePicture}
                             onChange={handleChange}
-                        />
-                    </div>
-                    <div className={styles['form-group']}>
-                        <label htmlFor="contactEmail">contact email:</label>
-                        <input
-                            type="email"
-                            id="contactEmail"
-                            value={formData.contactEmail}
-                            onChange={handleChange}
-                            required
                         />
                     </div>
                     <button type="submit">EDIT PROFILE</button>

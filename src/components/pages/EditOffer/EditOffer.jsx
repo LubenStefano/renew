@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import { useOffer, useEditOffer } from '../../../hooks/useOffers';
 import styles from './EditOffer.module.css';
 
 export default function EditOffer() {
+    const { id } = useParams();
+    const { offer } = useOffer(id);
+    const { edit } = useEditOffer();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         productName: '',
         condition: '',
@@ -9,6 +16,18 @@ export default function EditOffer() {
         productImage: '',
         productCategory: '',
     });
+
+    useEffect(() => {
+        if (offer) {
+            setFormData({
+                productName: offer.name || '',
+                condition: offer.condition || '',
+                description: offer.description || '',
+                productImage: offer.img || '',
+                productCategory: offer.category || '',
+            });
+        }
+    }, [offer]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -20,9 +39,27 @@ export default function EditOffer() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        // Add further processing logic here
+        const updatedOffer = {
+            name: formData.productName,
+            condition: formData.condition,
+            description: formData.description,
+            img: formData.productImage,
+            category: formData.productCategory,
+        };
+
+        edit(id, updatedOffer)
+            .then(() => {
+                console.log('Offer updated successfully!');
+                navigate(`/offers/details/${id}`);
+            })
+            .catch((error) => {
+                console.error('Error updating offer:', error);
+            });
     };
+
+    if (!offer) {
+        return <p>Loading offer details...</p>;
+    }
 
     return (
         <section className={styles['edit-offer-container']}>
@@ -31,16 +68,16 @@ export default function EditOffer() {
                 <form onSubmit={handleSubmit}>
                     <div className={styles['form-sections']}>
                         <div className={styles['form-section']}>
-                            <label htmlFor="productName">product name:</label>
+                            <label htmlFor="productName">Product Name:</label>
                             <input
                                 type="text"
                                 id="productName"
-                                placeholder="e.g: Iphone 11 pro, eSIM"
+                                placeholder="e.g: iPhone 11 Pro, eSIM"
                                 value={formData.productName}
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="condition">condition:</label>
+                            <label htmlFor="condition">Condition:</label>
                             <select
                                 id="condition"
                                 value={formData.condition}
@@ -48,22 +85,22 @@ export default function EditOffer() {
                                 required
                             >
                                 <option value="" disabled>
-                                    select
+                                    Select
                                 </option>
                                 <option value="new">New</option>
                                 <option value="used">Used</option>
                             </select>
-                            <label htmlFor="description">description:</label>
+                            <label htmlFor="description">Description:</label>
                             <textarea
                                 id="description"
-                                placeholder="e.g: I am selling, because I have new phone..."
+                                placeholder="e.g: I am selling because I have a new phone..."
                                 value={formData.description}
                                 onChange={handleChange}
                                 required
                             ></textarea>
                         </div>
                         <div className={styles['form-section']}>
-                            <label htmlFor="productImage">product image:</label>
+                            <label htmlFor="productImage">Product Image:</label>
                             <input
                                 type="url"
                                 id="productImage"
@@ -72,7 +109,7 @@ export default function EditOffer() {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="productCategory">product category:</label>
+                            <label htmlFor="productCategory">Product Category:</label>
                             <select
                                 id="productCategory"
                                 value={formData.productCategory}
@@ -80,7 +117,7 @@ export default function EditOffer() {
                                 required
                             >
                                 <option value="" disabled>
-                                    select
+                                    Select
                                 </option>
                                 <option value="electronics">Electronics</option>
                                 <option value="furniture">Furniture</option>

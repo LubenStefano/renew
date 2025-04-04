@@ -76,6 +76,7 @@ export default function Main() {
                         <ProductGrid
                             offers={visibleProducts}
                             onProductClick={seeProduct}
+                            className={styles['product-grid-main']}
                         />
                     </div>
                     <div className={styles['carosel-controls']}>

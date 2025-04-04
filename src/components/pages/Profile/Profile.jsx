@@ -1,13 +1,52 @@
 import React from 'react';
 import styles from './Profile.module.css';
 import { useUser } from '../../../context/UserContext';
+import { useGetOffersByUser, useSavedOffers } from '../../../hooks/useOffers';
+import ProductGrid from '../../shared/ProductGrid/ProductGrid';
+import { useNavigate } from 'react-router';
+import Button from '../../shared/Button/Button';
+import { useDeleteUser } from '../../../hooks/useAuth';
 
 export default function Profile() {
+
+    const navigate = useNavigate();
+
     const { user } = useUser();
 
+    const { userOffers } = useGetOffersByUser(user?.id);
+    const { savedOffers } = useSavedOffers(user?.id);
+    const {deleteUser} = useDeleteUser(user?.id);
+
     if (!user) {
-        return <p>Loading user data...</p>; // Display a fallback UI while user data is loading
+        return <p>Loading user data...</p>; 
     }
+    
+    if (!savedOffers) {
+        return <p>Loading saved offers...</p>;
+    }
+
+    const seeProduct = (id) => {
+        navigate(`/offers/details/${id}`);
+    }
+
+    const editProfile = () => {
+        navigate('/profile/edit');
+    }
+
+    const deleteProfile = () => {
+        if (window.confirm("Are you sure you want to delete your profile? This action cannot be undone.")) {
+
+        deleteUser(user.id)
+            .then(() => {
+                console.log("User deleted successfully!");
+                navigate('/');
+            })
+            .catch((error) => {
+                console.error("Error deleting user:", error);
+            }); 
+    }
+    }
+    
 
     return (
         <section className={styles["profile-page"]}>
@@ -20,8 +59,8 @@ export default function Profile() {
                     <p>email: {user.email}</p>
                 </div>
                 <div className={styles["profile-actions"]}>
-                    <button className={styles["edit-profile"]}>EDIT PROFILE</button>
-                    <button className={styles["delete-profile"]}>DELETE PROFILE</button>
+                    <Button text="EDIT PROFILE" className={styles["edit-profile"]} onClick={editProfile}/>
+                    <Button text="DELETE PROFILE" className={styles["delete-profile"]} onClick={deleteProfile} />
                 </div>
             </div>
 
@@ -29,34 +68,12 @@ export default function Profile() {
                 <div className={styles["products-section"]}>
                     <h3>PRODUCTS</h3>
                     <div className={styles["product-grid"]}>
-                        {/* Example product */}
-                        <div className={styles["product"]}>
-                            <img src="product-image.jpg" alt="Product" />
-                            <h3>The original car</h3>
-                            <p>
-                                ReNew is a place to buy and sell secondhand products. ReNew
-                                product now!
-                            </p>
-                            <button>SEE PRODUCT</button>
-                        </div>
-                        {/* Repeat as needed */}
+                    <ProductGrid offers={userOffers} onProductClick={seeProduct} />
                     </div>
                 </div>
                 <div className={styles["saved-section"]}>
                     <h3>SAVED</h3>
-                    <div className={styles["product-grid"]}>
-                        {/* Example saved product */}
-                        <div className={styles["product"]}>
-                            <img src="product-image.jpg" alt="Product" />
-                            <h3>The original sofa</h3>
-                            <p>
-                                ReNew is a place to buy and sell secondhand products. ReNew
-                                product now!
-                            </p>
-                            <button>SEE PRODUCT</button>
-                        </div>
-                        {/* Repeat as needed */}
-                    </div>
+                     <ProductGrid offers={savedOffers} onProductClick={seeProduct} />
                 </div>
             </div>
         </section>
