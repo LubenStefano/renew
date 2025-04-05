@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useLogin } from "../../../hooks/useAuth";
 import styles from "./Login.module.css";
+import { useErrorHandler } from "../../../hooks/useErrorHandler";
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
-    const { login, error } = useLogin();
+    const { login } = useLogin();
+    const { handleError } = useErrorHandler();
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -16,7 +18,11 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(formData.email, formData.password);
+        try {
+            await login(formData.email, formData.password);
+        } catch (err) {
+            handleError(err, "Login failed.");
+        }
     };
 
     return (
@@ -44,7 +50,6 @@ export default function Login() {
                     />
                     <button type="submit">LOGIN</button>
                 </form>
-                {error && <p className={styles["error"]}>{error}</p>}
                 <p>
                     Don't have an account? <a href="#">Register now</a>
                 </p>

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { request } from "../utils/request";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { useErrorHandler } from './useErrorHandler';
 
 export const useRegister = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUser } = useUser(); // Access setUser from UserContext
+    const { handleError } = useErrorHandler();
 
     const register = async (email, password, additionalData) => {
         try {
@@ -22,7 +24,7 @@ export const useRegister = () => {
 
             return loggedInUser;
         } catch (err) {
-            console.error("Registration error:", err);
+            handleError(err, 'Registration failed.');
             setError(err.message);
         }
     };
@@ -34,6 +36,7 @@ export const useLogin = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUser } = useUser(); // Access setUser from UserContext
+    const { handleError } = useErrorHandler();
 
     const login = async (email, password) => {
         try {
@@ -46,7 +49,7 @@ export const useLogin = () => {
 
             return userData;
         } catch (err) {
-            console.error("Login error:", err);
+            handleError(err, 'Login failed.');
             setError(err.message);
         }
     };
@@ -57,6 +60,7 @@ export const useLogin = () => {
 export const useLogout = () => {
     const { clearUser } = useUser();
     const navigate = useNavigate();
+    const { handleError } = useErrorHandler();
 
     const logout = async () => {
         try {
@@ -64,6 +68,7 @@ export const useLogout = () => {
             clearUser(); // Use clearUser to ensure a new state reference
             navigate("/"); // Redirect to home page after logout
         } catch (err) {
+            handleError(err, 'Logout failed.');
             console.error("Logout error:", err);
         }
     };
@@ -75,6 +80,7 @@ export const useDeleteUser = () => {
     const [error, setError] = useState(null);
     const { user, setUser } = useUser(); // Access setUser from UserContext
     const navigate = useNavigate();
+    const { handleError } = useErrorHandler();
 
     const deleteUser = async () => {
         try {
@@ -84,7 +90,7 @@ export const useDeleteUser = () => {
             await request.logoutUser(); // Log out the user after deletion
             navigate("/");
         } catch (err) {
-            console.error("Delete user error:", err);
+            handleError(err, 'Delete user failed.');
             setError(err.message);
         }
     };
@@ -94,6 +100,7 @@ export const useDeleteUser = () => {
 
 export const useUpdateUser = () => {
     const { user, setUser } = useUser();
+    const { handleError } = useErrorHandler();
 
     const updateUser = async (updatedData) => {
         try {
@@ -101,6 +108,7 @@ export const useUpdateUser = () => {
             setUser({ ...user, ...updatedUser }); // Ensure a new object reference is created
             console.log("User updated successfully:", updatedUser); // Debug log
         } catch (err) {
+            handleError(err, 'Update user failed.');
             console.error("Update user error:", err);
         }
     };
@@ -110,16 +118,22 @@ export const useUpdateUser = () => {
 
 export const useCreateOffer = () => {
     const { user } = useUser();
+    const { handleError } = useErrorHandler();
 
     const create = async (offerData) => {
-        if (!user) {
-            throw new Error("User must be logged in to create an offer.");
+        try {
+            if (!user) {
+                throw new Error("User must be logged in to create an offer.");
+            }
+
+            offerData.createdAt = new Date().toISOString();
+            offerData.creator = user.id; // Ensure only the user ID is stored
+
+            return await request.create(collectionName, offerData);
+        } catch (err) {
+            handleError(err, 'Create offer failed.');
+            console.error("Create offer error:", err);
         }
-
-        offerData.createdAt = new Date().toISOString();
-        offerData.creator = user.id; // Ensure only the user ID is stored
-
-        return await request.create(collectionName, offerData);
     };
 
     return { create };
@@ -128,6 +142,7 @@ export const useCreateOffer = () => {
 export const useUserById = (userId) => {
     const [userById, setUserById] = useState(null);
     const [error, setError] = useState(null);
+    const { handleError } = useErrorHandler();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -135,6 +150,7 @@ export const useUserById = (userId) => {
                 const userData = await request.getUserById(userId);
                 setUserById(userData);
             } catch (err) {
+                handleError(err, 'Fetch user by ID failed.');
                 console.error("Error fetching user:", err);
                 setError(err.message);
             }
@@ -144,4 +160,4 @@ export const useUserById = (userId) => {
     }, [userId]);
 
     return { userById , error };
-}
+};

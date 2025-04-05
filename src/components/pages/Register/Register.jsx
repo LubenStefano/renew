@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useRegister } from "../../../hooks/useAuth";
 import styles from "./Register.module.css";
+import { useNavigate } from "react-router";
+import { useUser } from "../../../context/UserContext";
+import { useErrorHandler } from "../../../hooks/useErrorHandler";
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -12,7 +15,8 @@ export default function Register() {
         rePassword: "",
     });
     const [passwordError, setPasswordError] = useState(null);
-    const { register, error } = useRegister();
+    const { register } = useRegister();
+    const { handleError } = useErrorHandler();
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -26,11 +30,16 @@ export default function Register() {
         e.preventDefault();
         if (formData.password !== formData.rePassword) {
             setPasswordError("Passwords do not match.");
+            handleError(null, "Passwords do not match.");
             return;
         }
         setPasswordError(null);
-        const { email, password, rePassword, ...additionalData } = formData;
-        await register(email, password, additionalData);
+        try {
+            const { email, password, rePassword, ...additionalData } = formData;
+            await register(email, password, additionalData);
+        } catch (err) {
+            handleError(err, "Registration failed.");
+        }
     };
 
     return (
@@ -102,7 +111,6 @@ export default function Register() {
                     <button type="submit">REGISTER</button>
                 </form>
                 {passwordError && <p className={styles["error"]}>{passwordError}</p>}
-                {error && <p className={styles["error"]}>{error}</p>}
                 <p>
                     Have an account? <a href="#">Login now</a>
                 </p>

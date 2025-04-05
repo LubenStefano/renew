@@ -108,7 +108,7 @@ export default function Details() {
               <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
               <p className={styles["location"]}>SELLER:</p>
               <div className={styles["seller-info"]}  onClick={profileHandler}>
-              <img src={offer.creatorPfp}  className={styles["profile-picture"]}/>
+              <img src={creator.profilePicture}  className={styles["profile-picture"]}/>
               <p className={styles["seller"]}><span>{creator.name}</span></p>
               </div>
               <p className={styles["contacts"]}>
@@ -138,8 +138,7 @@ export default function Details() {
             ) : (
               <>
                 <Button text="CALL NOW" className={styles["call"]} onClick={handleCallClick} />
-                <Button text="TEXT NOW" className={styles["text"]} />
-                <Button text="EMAIL" className={styles["email"]} onClick={handleEmailClick} />
+                <Button text="EMAIL NOW" className={styles["email"]} onClick={handleEmailClick} />
                 <Button
                   onClick={toggleSaveHandler}
                   text={isSaved ? "UNSAVE" : "SAVE NOW"}

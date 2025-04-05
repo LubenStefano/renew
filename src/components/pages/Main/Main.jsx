@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Main.module.css';
 import Button from '../../shared/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useLatestOffers } from '../../../hooks/useOffers';
-import ProductGrid from '../../shared/ProductGrid/ProductGrid';
+import InfiniteCarousel from '../../shared/InfiniteCarousel/InfiniteCarousel';
 
 export default function Main() {
     const navigate = useNavigate();
@@ -12,41 +11,6 @@ export default function Main() {
     const seeCollection = () => {
         navigate('/offers');
     };
-
-    const seeProduct = (id) => {
-        navigate(`offers/details/${id}`);
-    };
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const { latestOffers: products } = useLatestOffers();
-
-    const handleNext = () => {
-        if (isAnimating || products.length <= 4) return;
-        setIsAnimating(true);
-        setTimeout(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 4) % products.length);
-            setIsAnimating(false);
-        }, 300);
-    };
-
-    const handlePrev = () => {
-        if (isAnimating || products.length <= 4) return;
-        setIsAnimating(true);
-        setTimeout(() => {
-            setCurrentIndex((prevIndex) => (prevIndex - 4 + products.length) % products.length);
-            setIsAnimating(false);
-        }, 300);
-    };
-
-    const visibleProducts = [];
-    for (let i = 0; i < 4; i++) {
-        const productIndex = (currentIndex + i) % products.length;
-        if (!visibleProducts.includes(products[productIndex])) {
-            visibleProducts.push(products[productIndex]);
-        }
-    }
-    console.log(visibleProducts);
 
     return (
         <main className="main-page">
@@ -69,22 +33,10 @@ export default function Main() {
                 <Link to="/offers?category=electronics">ELECTRONICS</Link>
             </nav>
 
-            {products.length > 0 && (
-                <section className={styles['latest-products']}>
-                    <h2>Our latest products</h2>
-                    <div className={styles['product-carousel']}>
-                        <ProductGrid
-                            offers={visibleProducts}
-                            onProductClick={seeProduct}
-                            className={styles['product-grid-main']}
-                        />
-                    </div>
-                    <div className={styles['carosel-controls']}>
-                        <span id="prev" onClick={handlePrev}>{'<'}</span>
-                        <span id="next" onClick={handleNext}>{'>'}</span>
-                    </div>
-                </section>
-            )}
+            <section className={styles['latest-products']}>
+                <h2>Our latest products</h2>
+                <InfiniteCarousel autoSlide={true} interval={15000} itemsToShow={4} />
+            </section>
 
             <section className={styles.about}>
                 <h2>About</h2>

@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useOffer, useEditOffer } from '../../../hooks/useOffers';
+import { useErrorHandler } from '../../../hooks/useErrorHandler';
 import styles from './EditOffer.module.css';
+import { useUser } from '../../../context/UserContext';
 
 export default function EditOffer() {
     const { id } = useParams();
     const { offer } = useOffer(id);
     const { edit } = useEditOffer();
-    const { user } = useUser(); 
+    const { user } = useUser();
     const navigate = useNavigate();
-
-    if(offer.creator !== user.id){
-        navigate('/offers');
-        return <p>You are not authorized to edit this offer.</p>;
-    }
+    const { handleError } = useErrorHandler();
 
     const [formData, setFormData] = useState({
         productName: '',
@@ -21,6 +19,7 @@ export default function EditOffer() {
         description: '',
         productImage: '',
         productCategory: '',
+        price: '',
     });
 
     useEffect(() => {
@@ -36,6 +35,15 @@ export default function EditOffer() {
         }
     }, [offer]);
 
+    if (!offer || !user) {
+        return <p>Loading...</p>;
+    }
+
+    if (offer.creator !== user.id) {
+        navigate('/offers');
+        return <p>You are not authorized to edit this offer.</p>;
+    }
+
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -44,7 +52,7 @@ export default function EditOffer() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const updatedOffer = {
             name: formData.productName,
@@ -55,19 +63,14 @@ export default function EditOffer() {
             price: formData.price,
         };
 
-        edit(id, updatedOffer)
-            .then(() => {
-                console.log('Offer updated successfully!');
-                navigate(`/offers/details/${id}`);
-            })
-            .catch((error) => {
-                console.error('Error updating offer:', error);
-            });
+        try {
+            await edit(id, updatedOffer);
+            console.log('Offer updated successfully!');
+            navigate(`/offers/details/${id}`);
+        } catch (error) {
+            handleError(error, 'Failed to update offer.');
+        }
     };
-
-    if (!offer) {
-        return <p>Loading offer details...</p>;
-    }
 
     return (
         <section className={styles['edit-offer-container']}>
@@ -108,7 +111,7 @@ export default function EditOffer() {
                             ></textarea>
                         </div>
                         <div className={styles['form-section']}>
-                        <label htmlFor="productImage">Price:</label>
+                            <label htmlFor="price">Price:</label>
                             <input
                                 type="number"
                                 id="price"
@@ -117,7 +120,7 @@ export default function EditOffer() {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="price">Price:</label>
+                            <label htmlFor="productImage">Product Image:</label>
                             <input
                                 type="url"
                                 id="productImage"

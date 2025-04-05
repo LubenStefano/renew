@@ -11,12 +11,12 @@ export default function Profile() {
 
     const navigate = useNavigate();
     const { user } = useUser();
-    const { userId } = useParams(); // Get user ID from route parameters
-    const { userById } = useUserById(userId); // Fetch user by ID
+    const { userId } = useParams(); 
+    const { userById } = useUserById(userId); 
 
     useEffect(() => {
         if (user) {
-            console.log("User state in Profile:", user); // Debug log
+            console.log("User state in Profile:", user); 
         }
     }, [user]);
 
@@ -24,7 +24,7 @@ export default function Profile() {
     const { savedOffers } = useSavedOffers(userId);
     const { deleteUser } = useDeleteUser();
 
-    console.log("Profile user state:", user); // Debug log to verify user state updates
+    console.log("Profile user state:", user);
 
     if (!user || !userById) {
         return <p>Loading user data...</p>;

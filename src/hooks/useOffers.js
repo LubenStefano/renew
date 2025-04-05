@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { request } from "../utils/request";
 import { useUser } from "../context/UserContext";
+import { useErrorHandler } from './useErrorHandler';
 
 const collectionName = "offers";
 
@@ -9,7 +10,7 @@ export const useOffers = () => {
 
     useEffect(() => {
         request.getAll(collectionName).then(setOffers);
-    }, []);
+    }, [offers]);
 
     return { offers };
 };
@@ -17,6 +18,7 @@ export const useOffers = () => {
 export const useOffer = (offerId) => {
     const [offer, setOffer] = useState(null);
     const [creator, setCreator] = useState(null); // New state for creator details
+    const { handleError } = useErrorHandler();
 
     useEffect(() => {
         if (offerId) {
@@ -24,18 +26,13 @@ export const useOffer = (offerId) => {
                 .then(async (fetchedOffer) => {
                     setOffer(fetchedOffer);
                     if (typeof fetchedOffer.creator === "string") {
-                        // Fetch creator details only if creator is a string (user ID)
                         const creatorData = await request.getById("users", fetchedOffer.creator);
                         setCreator(creatorData);
-                    } else {
-                        console.error("Invalid creator format in offer:", fetchedOffer.creator);
                     }
                 })
-                .catch((error) => {
-                    console.error("Error fetching offer:", error);
-                });
+                .catch((error) => handleError(error, 'Failed to fetch offer.'));
         }
-    }, [offerId]);
+    }, [offerId]); // Automatically updates `offer` when `offerId` changes
 
     return { offer, creator }; // Return both offer and creator
 };
@@ -58,6 +55,7 @@ export const useCreateOffer = () => {
     return { create };
 };
 
+//това е хука
 export const useEditOffer = () => {
     const edit = async (offerId, offerData) => {
         if (!offerId || !offerData) {

@@ -69,59 +69,12 @@ body {
   background-color: #f5f5f5;
 }
 
-.carosel-controls {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 20px;
-  bottom: 300px;
-  padding: 0 40px;
-}
-
-.carosel-controls span {
-  cursor: pointer;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 30px;
-  font-weight: 400;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .latest-products h2 {
   font-size: 40px;
   margin-bottom: 16px;
   font-family: "Arvo", serif;
   font-weight: 400;
   margin: 80px;
-}
-
-.product-carousel.slide-next {
-  animation: slideNext 0.3s ease-in-out;
-}
-
-.product-carousel.slide-prev {
-  animation: slidePrev 0.3s ease-in-out;
-}
-
-.product-carousel.animating {
-  transform: translateX(-20px); 
-}
-
-.carousel-controls {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  z-index: 10;
 }
 
 .about {
@@ -169,46 +122,4 @@ body {
 
 .categoryLink:hover {
   color: #e6aa65;
-}
-
-.carouselControls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 20px;
-  padding: 0 40px;
-}
-
-.prev,
-.next {
-  cursor: pointer;
-  font-size: 30px;
-  font-weight: bold;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-@keyframes slideNext {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes slidePrev {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
 }

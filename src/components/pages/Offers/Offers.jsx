@@ -35,15 +35,6 @@ export default function Products() {
         }
     }, [categoryQuery, offers]);
 
-    // Polling mechanism to fetch offers periodically
-    useEffect(() => {
-        const interval = setInterval(() => {
-            fetchOffers(); // Fetch the latest offers
-        }, 5000); // Poll every 5 seconds
-
-        return () => clearInterval(interval); // Cleanup on component unmount
-    }, [fetchOffers]);
-
     return (
         <section className={styles["products-page"]}>
             <h2>Products</h2>

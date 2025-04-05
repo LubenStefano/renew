@@ -15,6 +15,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/shared/Layout/Layout';
 import { UserProvider } from './context/UserContext';
 import AuthGuard from './components/Guards/AuthGuard';
+import AlreadyLoggedInGuard from './components/Guards/AlreadyLoggedInGuard';
+import '@ant-design/v5-patch-for-react-19';
 
 function App() {
   return (
@@ -24,14 +26,16 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/offers/:category" element={<Offers />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route element={<AuthGuard />}>
           <Route path="/offers/details/:id" element={<Details />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/offers/create" element={<CreateOffer />} />
           <Route path="/offers/edit/:id" element={<EditOffer />} />
           <Route path="/profile/edit/" element={<EditProfile />} />
+        </Route>
+        <Route element={<AlreadyLoggedInGuard />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         </Route>
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

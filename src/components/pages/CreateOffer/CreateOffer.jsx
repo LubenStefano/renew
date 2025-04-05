@@ -2,19 +2,25 @@ import React from 'react';
 import styles from './CreateOffer.module.css';
 import { useNavigate } from 'react-router';
 import { useCreateOffer } from '../../../hooks/useOffers';
+import { useErrorHandler } from '../../../hooks/useErrorHandler';
 
 export default function CreateOffer() {
     const navigate = useNavigate();
     const { create } = useCreateOffer(); 
+    const { handleError } = useErrorHandler();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const offerData = Object.fromEntries(formData);
     
-        await create(offerData);
-        navigate("/offers");
-      };
+        try {
+            await create(offerData);
+            navigate("/offers");
+        } catch (error) {
+            handleError(error, 'Failed to create offer.');
+        }
+    };
 
     return (
         <section className={styles['create-offer-container']}>
