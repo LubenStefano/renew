@@ -19,7 +19,7 @@ export default function Navbar() {
             <li><NavLink to="/offers" className={({isActive}) => isActive ? styles.activeStyle : undefined}>PRODUCTS</NavLink></li>
             {user ? (
               <>
-                <li><NavLink to="/profile" className={({isActive}) => isActive ? styles.activeStyle : undefined}>PROFILE</NavLink></li>
+                <li><NavLink to={`/profile/${user.id}`} className={({isActive}) => isActive ? styles.activeStyle : undefined}>PROFILE</NavLink></li>
                 <li><NavLink to="/offers/create" className={({isActive}) => isActive ? styles.activeStyle : undefined}>SELL NOW</NavLink></li>
                 <li><button onClick={logout} className={styles.logoutButton}>LOGOUT</button></li>
               </>

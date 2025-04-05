@@ -37,7 +37,7 @@ export default function EditProfile() {
         try {
             await setUser(formData); // Update user in context and Firebase
             console.log("Profile updated successfully!"); // Debug log
-            navigate('/profile'); // Navigate back to the profile page
+            navigate(`/profile/${user.id}`); // Navigate back to the profile page
         } catch (err) {
             console.error('Error updating profile:', err);
         }

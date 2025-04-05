@@ -137,5 +137,14 @@ export const request = {
     const userDocRef = doc(db, "users", userId);
     await setDoc(userDocRef, data, { merge: true });
   },
+
+  async getUserById(userId) {
+    const userDocRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+      throw new Error("User data not found in Firestore.");
+    }
+    return { id: userDoc.id, ...userDoc.data() };
+  },
 };
 

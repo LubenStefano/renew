@@ -7,7 +7,13 @@ export default function EditOffer() {
     const { id } = useParams();
     const { offer } = useOffer(id);
     const { edit } = useEditOffer();
+    const { user } = useUser(); 
     const navigate = useNavigate();
+
+    if(offer.creator !== user.id){
+        navigate('/offers');
+        return <p>You are not authorized to edit this offer.</p>;
+    }
 
     const [formData, setFormData] = useState({
         productName: '',
@@ -25,6 +31,7 @@ export default function EditOffer() {
                 description: offer.description || '',
                 productImage: offer.img || '',
                 productCategory: offer.category || '',
+                price: offer.price || '',
             });
         }
     }, [offer]);
@@ -45,6 +52,7 @@ export default function EditOffer() {
             description: formData.description,
             img: formData.productImage,
             category: formData.productCategory,
+            price: formData.price,
         };
 
         edit(id, updatedOffer)
@@ -100,7 +108,16 @@ export default function EditOffer() {
                             ></textarea>
                         </div>
                         <div className={styles['form-section']}>
-                            <label htmlFor="productImage">Product Image:</label>
+                        <label htmlFor="productImage">Price:</label>
+                            <input
+                                type="number"
+                                id="price"
+                                placeholder="e.g: 800"
+                                value={formData.price}
+                                onChange={handleChange}
+                                required
+                            />
+                            <label htmlFor="price">Price:</label>
                             <input
                                 type="url"
                                 id="productImage"

@@ -15,14 +15,14 @@ export default function Products() {
         navigate(`/offers/details/${id}`);
     };
 
+    const { offers, fetchOffers } = useOffers(); // Ensure `useOffers` exposes a `fetchOffers` method
+    const [filteredOffers, setFilteredOffers] = useState([]);
+
     useEffect(() => {
         if (categoryQuery) {
             console.log(`Fetching products for category: ${categoryQuery}`);
         }
     }, [categoryQuery]);
-
-    const { offers } = useOffers();
-    const [filteredOffers, setFilteredOffers] = useState([]);
 
     useEffect(() => {
         if (categoryQuery) {
@@ -34,6 +34,15 @@ export default function Products() {
             setFilteredOffers(offers);
         }
     }, [categoryQuery, offers]);
+
+    // Polling mechanism to fetch offers periodically
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchOffers(); // Fetch the latest offers
+        }, 5000); // Poll every 5 seconds
+
+        return () => clearInterval(interval); // Cleanup on component unmount
+    }, [fetchOffers]);
 
     return (
         <section className={styles["products-page"]}>

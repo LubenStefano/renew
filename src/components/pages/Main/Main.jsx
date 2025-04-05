@@ -10,7 +10,7 @@ export default function Main() {
     const navigate = useNavigate();
 
     const seeCollection = () => {
-        navigate('/products');
+        navigate('/offers');
     };
 
     const seeProduct = (id) => {

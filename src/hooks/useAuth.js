@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "../utils/request";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
@@ -124,3 +124,24 @@ export const useCreateOffer = () => {
 
     return { create };
 };
+
+export const useUserById = (userId) => {
+    const [userById, setUserById] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await request.getUserById(userId);
+                setUserById(userData);
+            } catch (err) {
+                console.error("Error fetching user:", err);
+                setError(err.message);
+            }
+        };
+
+        fetchUser();
+    }, [userId]);
+
+    return { userById , error };
+}

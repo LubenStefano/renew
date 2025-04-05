@@ -50,6 +50,7 @@ export const useCreateOffer = () => {
 
         offerData.createdAt = new Date().toISOString();
         offerData.creator = user.id; // Store only the user ID
+        offerData.creatorPfp = user.profilePicture; // Store the user's profile picture URL
 
         return await request.create(collectionName, offerData);
     };

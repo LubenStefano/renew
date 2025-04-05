@@ -75,6 +75,10 @@ export default function Details() {
     navigate(`/offers/edit/${offer.id}`);
   };
 
+  const profileHandler = () => {
+    navigate(`/profile/${offer.creator}`);
+  };
+
   const handleDeleteClick = () => {
     if (window.confirm("Are you sure you want to delete this offer?")) {
       remove(offer.id)
@@ -102,7 +106,11 @@ export default function Details() {
             </div>
             <div className={styles["product-info"]}>
               <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
-              <p className={styles["seller"]}>SELLER: <span>{creator.name}</span></p>
+              <p className={styles["location"]}>SELLER:</p>
+              <div className={styles["seller-info"]}  onClick={profileHandler}>
+              <img src={offer.creatorPfp}  className={styles["profile-picture"]}/>
+              <p className={styles["seller"]}><span>{creator.name}</span></p>
+              </div>
               <p className={styles["contacts"]}>
                 contacts:<br />
                 gsm: {creator.phone}<br />

@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, []); // Dependency array empty means this effect runs only once on mount
 
     return (
         <UserContext.Provider value={{ user, setUser: updateUser, clearUser, error, setError }}>
