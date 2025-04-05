@@ -55,24 +55,20 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-    const [error, setError] = useState(null);
+    const { clearUser } = useUser();
     const navigate = useNavigate();
-    const { setUser } = useUser(); 
 
     const logout = async () => {
         try {
-            setError(null);
             await request.logoutUser();
-            setUser(null); 
-            setError(null); // Clear error state after successful logout
-            navigate("/");
+            clearUser(); // Use clearUser to ensure a new state reference
+            navigate("/"); // Redirect to home page after logout
         } catch (err) {
             console.error("Logout error:", err);
-            setError(err.message);
         }
     };
 
-    return { logout, error };
+    return { logout };
 };
 
 export const useDeleteUser = () => {
@@ -97,21 +93,34 @@ export const useDeleteUser = () => {
 };
 
 export const useUpdateUser = () => {
-    const [error, setError] = useState(null);
-    const { user, setUser } = useUser(); // Access setUser from UserContext
-    const navigate = useNavigate();
+    const { user, setUser } = useUser();
 
     const updateUser = async (updatedData) => {
         try {
-            setError(null);
-            const updatedUser = await request.updateUser(user.id, updatedData); // Assuming updateUser returns the updated user data
-            setUser({ ...user, ...updatedUser }); // Immediately update user data in context
-            navigate("/profile"); // Redirect to profile page after update
+            const updatedUser = await request.updateUser(user.id, updatedData);
+            setUser({ ...user, ...updatedUser }); // Ensure a new object reference is created
+            console.log("User updated successfully:", updatedUser); // Debug log
         } catch (err) {
             console.error("Update user error:", err);
-            setError(err.message);
         }
     };
 
-    return { updateUser, error };
+    return { updateUser };
+};
+
+export const useCreateOffer = () => {
+    const { user } = useUser();
+
+    const create = async (offerData) => {
+        if (!user) {
+            throw new Error("User must be logged in to create an offer.");
+        }
+
+        offerData.createdAt = new Date().toISOString();
+        offerData.creator = user.id; // Ensure only the user ID is stored
+
+        return await request.create(collectionName, offerData);
+    };
+
+    return { create };
 };

@@ -16,13 +16,20 @@ export const useOffers = () => {
 
 export const useOffer = (offerId) => {
     const [offer, setOffer] = useState(null);
-    console.log("Offer ID:", offerId);
+    const [creator, setCreator] = useState(null); // New state for creator details
 
     useEffect(() => {
         if (offerId) {
             request.getById(collectionName, offerId)
-                .then((fetchedOffer) => {
+                .then(async (fetchedOffer) => {
                     setOffer(fetchedOffer);
+                    if (typeof fetchedOffer.creator === "string") {
+                        // Fetch creator details only if creator is a string (user ID)
+                        const creatorData = await request.getById("users", fetchedOffer.creator);
+                        setCreator(creatorData);
+                    } else {
+                        console.error("Invalid creator format in offer:", fetchedOffer.creator);
+                    }
                 })
                 .catch((error) => {
                     console.error("Error fetching offer:", error);
@@ -30,9 +37,7 @@ export const useOffer = (offerId) => {
         }
     }, [offerId]);
 
-    console.log("Offer fetched:", offer);
-
-    return { offer };
+    return { offer, creator }; // Return both offer and creator
 };
 
 export const useCreateOffer = () => {
@@ -44,12 +49,7 @@ export const useCreateOffer = () => {
         }
 
         offerData.createdAt = new Date().toISOString();
-        offerData.creator = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
-        };
+        offerData.creator = user.id; // Store only the user ID
 
         return await request.create(collectionName, offerData);
     };

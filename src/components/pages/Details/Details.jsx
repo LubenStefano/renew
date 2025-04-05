@@ -8,7 +8,7 @@ import Button from '../../shared/Button/Button';
 export default function Details() {
 
   const { id } = useParams();
-  const { offer } = useOffer(id);
+  const { offer, creator } = useOffer(id); // Use the updated hook
   const { user } = useUser(); 
   const { saveOffer } = useSaveOffer();
   const { deleteSavedOffer } = useDeleteSavedOffer();
@@ -16,6 +16,12 @@ export default function Details() {
   const { remove } = useDeleteOffer();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user){
+      console.log("User state in Details:", user); // Debug log
+    }
+  }, [user]);
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -27,7 +33,7 @@ export default function Details() {
 
   console.log(offer);
 
-  if (!offer) {
+  if (!offer || !creator) {
     return <p>Loading offer details...</p>;
   }
 
@@ -54,14 +60,14 @@ export default function Details() {
   };
 
   const handleEmailClick = () => {
-    if (offer?.creator?.email) {
-      window.location.href = `mailto:${offer.creator.email}`;
+    if (creator?.email) {
+      window.location.href = `mailto:${creator.email}`;
     }
   };
 
   const handleCallClick = () => {
-    if (offer?.creator?.phone) {
-      window.location.href = `tel:${offer.creator.phone}`;
+    if (creator?.phone) {
+      window.location.href = `tel:${creator.phone}`;
     }
   };
 
@@ -96,11 +102,11 @@ export default function Details() {
             </div>
             <div className={styles["product-info"]}>
               <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
-              <p className={styles["seller"]}>SELLER: <span>{offer.creator.name}</span></p>
+              <p className={styles["seller"]}>SELLER: <span>{creator.name}</span></p>
               <p className={styles["contacts"]}>
                 contacts:<br />
-                gsm: {offer.creator.phone}<br />
-                email: {offer.creator.email}
+                gsm: {creator.phone}<br />
+                email: {creator.email}
               </p>
               <p className={styles["condition"]}>CONDITION: <span>{offer.condition}</span></p>
             </div>
@@ -116,7 +122,7 @@ export default function Details() {
             <p>{offer.category}</p>
           </div>
           <div className={styles["actions"]}>
-            {user?.id === offer.creator.id ? (
+            {user?.id === offer.creator ? (
               <>
                 <Button text="EDIT OFFER" className={styles["edit"]} onClick={handleEditClick} />
                 <Button text="DELETE OFFER" className={styles["delete"]} onClick={handleDeleteClick} />

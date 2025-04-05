@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useUser } from '../../../context/UserContext';
-import { useUpdateUser } from '../../../hooks/useAuth';
+import { useUser } from '../../../context/UserContext'; // Use updateUser from UserContext
 import { useNavigate } from 'react-router-dom';
 import styles from './EditProfile.module.css';
 
 export default function EditProfile() {
-    const { user } = useUser();
-    const { updateUser } = useUpdateUser();
+    const { user, setUser } = useUser(); // Access setUser from UserContext
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -37,8 +35,9 @@ export default function EditProfile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateUser(formData);
-            navigate('/profile');
+            await setUser(formData); // Update user in context and Firebase
+            console.log("Profile updated successfully!"); // Debug log
+            navigate('/profile'); // Navigate back to the profile page
         } catch (err) {
             console.error('Error updating profile:', err);
         }

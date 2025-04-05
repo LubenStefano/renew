@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 const UserContext = createContext();
@@ -9,8 +9,26 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
-    const updateUser = (userData) => {
-        setUser((prevUser) => ({ ...prevUser, ...userData })); // Merge new data with existing user data
+    const updateUser = async (userData) => {
+        try {
+            // Update the user in Firebase
+            const userDocRef = doc(db, "users", user.id);
+            await setDoc(userDocRef, userData, { merge: true });
+
+            // Fetch the latest user data from Firebase
+            const updatedUserDoc = await getDoc(userDocRef);
+            if (updatedUserDoc.exists()) {
+                const updatedUser = { id: user.id, ...updatedUserDoc.data() };
+                setUser(updatedUser); // Update the context with the latest user data
+                console.log("Updated user in context:", updatedUser); // Debug log
+            }
+        } catch (error) {
+            console.error("Error updating user in context:", error);
+        }
+    };
+
+    const clearUser = () => {
+        setUser(null); // Clear user state with a new reference
     };
 
     useEffect(() => {
@@ -22,8 +40,8 @@ export const UserProvider = ({ children }) => {
                     setUser({
                         id: firebaseUser.uid,
                         email: firebaseUser.email,
-                        name: userDoc.data().name ,
-                        phone: userDoc.data().phone , 
+                        name: userDoc.data().name,
+                        phone: userDoc.data().phone,
                         profilePicture: userDoc.data().profilePicture,
                         savedOffers: userDoc.data().savedOffers,
                         createdAt: userDoc.data().createdAt,
@@ -33,7 +51,7 @@ export const UserProvider = ({ children }) => {
                     setError("User data not found in Firestore.");
                 }
             } else {
-                setUser(null);
+                clearUser(); // Clear user state on logout
             }
         });
 
@@ -41,7 +59,7 @@ export const UserProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, setUser: updateUser, error, setError }}>
+        <UserContext.Provider value={{ user, setUser: updateUser, clearUser, error, setError }}>
             {children}
         </UserContext.Provider>
     );

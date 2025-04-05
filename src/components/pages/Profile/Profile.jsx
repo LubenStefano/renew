@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Profile.module.css';
 import { useUser } from '../../../context/UserContext';
-import { useGetOffersByUser, useSavedOffers } from '../../../hooks/useOffers';
+import {useGetOffersByUserId, useSavedOffers } from '../../../hooks/useOffers';
 import ProductGrid from '../../shared/ProductGrid/ProductGrid';
 import { useNavigate } from 'react-router';
 import Button from '../../shared/Button/Button';
@@ -12,10 +12,18 @@ export default function Profile() {
     const navigate = useNavigate();
 
     const { user } = useUser();
+    useEffect(() => {
+        if(user) {
+            console.log("User state in Profile:", user); // Debug log
+        }
+    }
+    , [user]);
 
-    const { userOffers } = useGetOffersByUser(user?.id);
+    const { userOffers } = useGetOffersByUserId(user?.id);
     const { savedOffers } = useSavedOffers(user?.id);
-    const {deleteUser} = useDeleteUser(user?.id);
+    const { deleteUser } = useDeleteUser();
+
+    console.log("Profile user state:", user); // Debug log to verify user state updates
 
     if (!user) {
         return <p>Loading user data...</p>; 

@@ -22,11 +22,9 @@ export const request = {
     const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-
-      return { id: docSnap.id, ...docSnap.data() };
+        return { id: docSnap.id, ...docSnap.data() };
     } else {
-      throw new Error("No such document!");
+        throw new Error(`No document found in ${collectionName} with ID ${id}`);
     }
   },
 
@@ -86,7 +84,7 @@ export const request = {
   },
 
   async getByUser(collectionName, userId) {
-    const q = query(collection(db, collectionName), where("creator.id", "==", userId));
+    const q = query(collection(db, collectionName), where("creator", "==", userId));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   },
