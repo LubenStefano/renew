@@ -49,9 +49,34 @@ export function useErrorHandler() {
       }
     }
 
-    // Firebase error handling
-    else if (error?.code && error?.message) {
-      showError('Firebase Error', errorMessage);
+ // Firebase error handling
+else if (error?.code) {
+  switch (error.code) {
+    case 'auth/invalid-credential':
+      showError('Invalid Credentials', 'The provided email or password is invalid. Please try again.');
+      break;
+    case 'auth/user-not-found':
+      showError('User Not Found', 'No account found with this email. Please register or try again.');
+      break;
+    case 'auth/wrong-password':
+      showError('Wrong Password', 'The password you entered is incorrect. Please try again.');
+      break;
+    case 'auth/email-already-in-use':
+      showError('Email Already In Use', 'This email is already registered. Please log in or use a different email.');
+      break;
+    case 'auth/weak-password':
+      showError('Weak Password', 'Your password is too weak. Please use a stronger password.');
+      break;
+    case 'auth/too-many-requests':
+      showError('Too Many Attempts', 'You have made too many attempts. Please try again later.');
+      break;
+    case 'auth/network-request-failed':
+      showError('Network Error', 'A network error occurred. Please check your connection and try again.');
+      break;
+    default:
+      showError('Authentication Error', 'An unexpected error occurred. Please try again.');
+  }
+
     }
 
     // Generic error handling

@@ -8,9 +8,20 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     const updateUser = async (userData) => {
         try {
+            if (!user || !user.id) {
+                console.log("User is loading..."); // Debug log  
+                return;
+            }
+
+            if (!userData || typeof userData !== "object") {
+                console.warn("The profile has been deleted thus the object is null instead!"); // Graceful handling
+                return;
+            }
+
             // Update the user in Firebase
             const userDocRef = doc(db, "users", user.id);
             await setDoc(userDocRef, userData, { merge: true });
@@ -33,6 +44,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            setLoading(true); // Start loading
             if (firebaseUser) {
                 const userDocRef = doc(db, "users", firebaseUser.uid);
                 const userDoc = await getDoc(userDocRef);
@@ -53,13 +65,14 @@ export const UserProvider = ({ children }) => {
             } else {
                 clearUser(); // Clear user state on logout
             }
+            setLoading(false); // End loading
         });
 
         return () => unsubscribe();
     }, []); // Dependency array empty means this effect runs only once on mount
 
     return (
-        <UserContext.Provider value={{ user, setUser: updateUser, clearUser, error, setError }}>
+        <UserContext.Provider value={{ user, setUser: updateUser, clearUser, error, setError, loading }}>
             {children}
         </UserContext.Provider>
     );

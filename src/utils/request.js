@@ -213,10 +213,27 @@ export const request = {
       // Delete all offers created by the user
       const userOffersQuery = query(collection(db, "offers"), where("creator", "==", userId));
       const userOffersSnapshot = await getDocs(userOffersQuery);
-      const batch = writeBatch(db); // Use writeBatch instead of db.batch()
+      const batch = writeBatch(db);
+
+      // Collect all offer IDs created by the user
+      const offerIds = [];
       userOffersSnapshot.forEach(doc => {
-          batch.delete(doc.ref);
+        offerIds.push(doc.id);
+        batch.delete(doc.ref);
       });
+
+      // Remove the user's offers from other users' savedOffers
+      if (offerIds.length > 0) {
+        const usersQuery = query(collection(db, "users"), where("savedOffers", "array-contains-any", offerIds));
+        const usersSnapshot = await getDocs(usersQuery);
+        usersSnapshot.forEach(userDoc => {
+          const userData = userDoc.data();
+          const updatedSavedOffers = userData.savedOffers.filter(offerId => !offerIds.includes(offerId));
+          batch.set(userDoc.ref, { savedOffers: updatedSavedOffers }, { merge: true });
+        });
+      }
+
+      // Commit the batch operation
       await batch.commit();
 
       // Delete the user document
