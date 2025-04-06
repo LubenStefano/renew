@@ -6,7 +6,7 @@ import { useErrorHandler } from './useErrorHandler';
 const collectionName = "offers";
 
 export const useOffers = () => {
-    const [offers, setOffers] = useState([]);
+    const [offers, setOffers] = useState();
 
     useEffect(() => {
         request.getAll(collectionName).then(setOffers);
@@ -103,7 +103,7 @@ export const useLatestOffers = (count = 10) => {
 };
 
 export const useOffersByCategory = (category) => {
-    const [offersByCategory, setOffersByCategory] = useState([]);
+    const [offersByCategory, setOffersByCategory] = useState();
 
     useEffect(() => {
         if (category) {
@@ -134,7 +134,7 @@ export const useSaveOffer = () => {
 
 export const useSavedOffers = () => {
     const { user } = useUser();
-    const [savedOffers, setSavedOffers] = useState([]);
+    const [savedOffers, setSavedOffers] = useState();
 
     useEffect(() => {
         if (user) {
@@ -160,7 +160,7 @@ export const useDeleteSavedOffer = () => {
 
 export const useGetOffersByUser = () => {
     const { user } = useUser();
-    const [userOffers, setUserOffers] = useState([]);
+    const [userOffers, setUserOffers] = useState();
 
     useEffect(() => {
         if (user) {
@@ -172,7 +172,7 @@ export const useGetOffersByUser = () => {
 };
 
 export const useGetOffersByUserId = (userId) => {
-    const [userOffers, setUserOffers] = useState([]);
+    const [userOffers, setUserOffers] = useState();
 
     useEffect(() => {
         if (userId) {

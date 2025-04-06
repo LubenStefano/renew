@@ -4,6 +4,7 @@ import { useOffer, useSaveOffer, useDeleteSavedOffer, useSavedOffers, useEditOff
 import { useNavigate, useParams } from 'react-router';
 import { useUser } from '../../../context/UserContext';
 import Button from '../../shared/Button/Button';
+import { Skeleton } from 'antd';
 
 export default function Details() {
 
@@ -34,7 +35,20 @@ export default function Details() {
   console.log(offer);
 
   if (!offer || !creator) {
-    return <p>Loading offer details...</p>;
+    return (
+      <div className={styles["product-details"]}>
+        <Skeleton active title={{ width: '50%' }} paragraph={{ rows: 1, width: ['30%'] }} />
+        <div className={styles["big-container"]}>
+          <div className={styles["product-container"]}>
+            <Skeleton.Image style={{ width: 300, height: 300 }} />
+            <div className={styles["product-info"]}>
+              <Skeleton active title={{ width: '40%' }} paragraph={{ rows: 3, width: ['60%', '80%', '50%'] }} />
+            </div>
+          </div>
+          <Skeleton active title={{ width: '30%' }} paragraph={{ rows: 2, width: ['90%', '80%'] }} />
+        </div>
+      </div>
+    );
   }
 
   const toggleSaveHandler = () => {

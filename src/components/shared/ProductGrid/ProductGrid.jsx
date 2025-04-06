@@ -1,10 +1,23 @@
 import React from "react";
 import styles from "./ProductGrid.module.css";
 import Button from "../Button/Button";
+import { Skeleton } from 'antd';
 
 export default function ProductGrid({ offers, onProductClick }) {
-    if (!offers || offers.length === 0) {
-        return <div className={styles["product-grid-carousel"]}>No products available.</div>;
+    if (!offers ) {
+        return (
+            <div className={styles["product-grid-carousel"]}>
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className={styles["product"]}>
+                        <Skeleton.Image style={{ width: 200, height: 200 }} />
+                        <Skeleton active title={{ width: '60%' }} paragraph={{ rows: 2, width: ['80%', '90%'] }} />
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    if (offers.length === 0) {
+        return <p>No products available.</p>;
     }
 
     return (

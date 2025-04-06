@@ -4,8 +4,8 @@ import { useUser } from '../../../context/UserContext';
 import { useGetOffersByUserId, useSavedOffers } from '../../../hooks/useOffers';
 import ProductGrid from '../../shared/ProductGrid/ProductGrid';
 import { useNavigate, useParams } from 'react-router-dom';
-import Button from '../../shared/Button/Button';
 import { useDeleteUser, useUserById } from '../../../hooks/useAuth';
+import ProfileHeader from '../../shared/ProfileHeader/ProfileHeader';
 
 export default function Profile() {
 
@@ -22,38 +22,14 @@ export default function Profile() {
 
     const { userOffers } = useGetOffersByUserId(userId);
     const { savedOffers } = useSavedOffers(userId);
-    const { deleteUser } = useDeleteUser();
+
 
     console.log("Profile user state:", user);
-
-    if (!user || !userById) {
-        return <p>Loading user data...</p>;
-    }
-
-    if (!savedOffers) {
-        return <p>Loading saved offers...</p>;
-    }
 
     const seeProduct = (id) => {
         navigate(`/offers/details/${id}`);
     };
 
-    const editProfile = () => {
-        navigate('/profile/edit');
-    };
-
-    const deleteProfile = () => {
-        if (window.confirm("Are you sure you want to delete your profile? This action cannot be undone.")) {
-            deleteUser(user.id)
-                .then(() => {
-                    console.log("User deleted successfully!");
-                    navigate('/');
-                })
-                .catch((error) => {
-                    console.error("Error deleting user:", error);
-                });
-        }
-    };
 
     const isCurrentUser = user.id === userId; // Check if the profile belongs to the logged-in user
     console.log(`Is current user: ${user.id} and ${userId}`); // Debug log
@@ -61,21 +37,7 @@ export default function Profile() {
 
     return (
         <section className={styles["profile-page"]}>
-            <div className={styles["profile-header"]}>
-                <img src={userById.profilePicture} alt="Profile" className={styles["profile-picture"]} />
-                <div className={styles["profile-info"]}>
-                    <h2>{userById.name}</h2>
-                    <p><strong>contacts:</strong></p>
-                    <p>gsm: {userById.phone}</p>
-                    <p>email: {userById.email}</p>
-                </div>
-                {isCurrentUser && ( // Conditionally render edit and delete buttons
-                    <div className={styles["profile-actions"]}>
-                        <Button text="EDIT PROFILE" className={styles["edit-profile"]} onClick={editProfile} />
-                        <Button text="DELETE PROFILE" className={styles["delete-profile"]} onClick={deleteProfile} />
-                    </div>
-                )}
-            </div>
+            <ProfileHeader userById={userById} isCurrentUser={isCurrentUser} />
 
             <div className={styles["profile-content"]}>
                 <div className={styles["products-section"]}>
