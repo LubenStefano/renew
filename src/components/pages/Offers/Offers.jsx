@@ -15,7 +15,7 @@ export default function Products() {
         navigate(`/offers/details/${id}`);
     };
 
-    const { offers, fetchOffers } = useOffers(); // Ensure `useOffers` exposes a `fetchOffers` method
+    const { offers , fetchOffers } = useOffers(); // Ensure `useOffers` exposes a `fetchOffers` method
     const [filteredOffers, setFilteredOffers] = useState([]);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function Products() {
     }, [categoryQuery]);
 
     useEffect(() => {
-        if (categoryQuery) {
+        if (categoryQuery && offers) {
             const filtered = offers.filter(
                 (offer) => offer.category.toLowerCase() === categoryQuery.toLowerCase()
             );
