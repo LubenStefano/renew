@@ -69,3 +69,13 @@
 .edit-offer-form button:hover {
     background-color: #d69f5f;
 }
+
+@media (max-width: 768px) {
+    .edit-offer-container {
+        padding: 20px;
+    }
+
+    .form-sections {
+        flex-direction: column;
+    }
+}

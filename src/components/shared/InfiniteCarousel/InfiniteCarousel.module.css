@@ -72,3 +72,21 @@
 .carouselButton:hover {
   background-color: #d69f5f;
 }
+
+@media (max-width: 1024px) {
+  .carouselItem {
+    flex: 0 0 calc((90% / 3) - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .carouselItem {
+    flex: 0 0 calc((90% / 2) - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .carouselItem {
+    flex: 0 0 calc(90% - 20px);
+  }
+}

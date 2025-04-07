@@ -23,17 +23,17 @@ export default function Main() {
                     </p>
                     <Button text="SEE COLLECTION" onClick={seeCollection} className={"see-collection"}></Button>
                 </div>
-                <img id="hero-img" src="/images/hero-img.png" alt="The original sofa" />
+                <img id="hero-img" className={styles.heroImg} src="/images/hero-img.png" alt="Hero image of flowers" />
             </section>
 
-            <nav className={styles.categories}>
+            <nav className={`${styles.categories} ${styles.hideCategoriesOnMobile}`}>
                 <Link to="/offers?category=home">HOME</Link>
                 <Link to="/offers?category=clothes">CLOTHES</Link>
                 <Link to="/offers?category=vehicles">VEHICLES</Link>
                 <Link to="/offers?category=electronics">ELECTRONICS</Link>
             </nav>
 
-            <section className={styles['latest-products']}>
+            <section className={`${styles['latest-products']} ${styles.hideLatestProductsOnMobile}`}>
                 <h2>Our latest products</h2>
                 <InfiniteCarousel autoSlide={true} interval={15000} itemsToShow={4} />
             </section>

@@ -98,7 +98,7 @@ export default function Details() {
       remove(offer.id)
         .then(() => {
           console.log("Offer deleted successfully!");
-          navigate("/profile");
+          navigate(`/profile/${offer.creator}`);
         })
         .catch((error) => {
           console.error("Error deleting offer:", error);

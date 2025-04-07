@@ -103,4 +103,27 @@
     display: block;
     margin: auto;
   }
-  
+
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .register-form {
+    width: 100%;
+  }
+
+  .form-sections {
+    flex-direction: column; /* Stack the form sections in a column */
+  }
+
+  .form-section {
+    width: 100%; /* Adjust width for mobile */
+    margin: 0 0 20px 0; /* Add spacing between sections */
+  }
+
+  .register-image {
+    display: none; /* Hide the image container on mobile */
+  }
+}

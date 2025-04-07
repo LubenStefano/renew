@@ -1,5 +1,5 @@
 import {Navigate, Outlet} from "react-router";
-import { useUser } from "../../context/UserContext"; // Adjust the path if necessary
+import { useUser } from "../context/UserContext";
 
 export default function AuthGuard() {
     const { user } = useUser(); // Access user from UserContext

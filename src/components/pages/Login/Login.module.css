@@ -76,4 +76,18 @@
     display: block;
     margin: auto;
   }
-  
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .login-form {
+    padding: 20px;
+  }
+
+  .login-image {
+    display: none; /* Hide the image container on mobile */
+  }
+}

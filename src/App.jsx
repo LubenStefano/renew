@@ -3,7 +3,6 @@ import CreateOffer from './components/pages/CreateOffer/CreateOffer';
 import Details from './components/pages/Details/Details';
 import EditOffer from './components/pages/EditOffer/EditOffer';
 import Login from './components/pages/Login/Login';
-import Main from './components/pages/main/Main';
 import Profile from './components/pages/Profile/Profile';
 import Register from './components/pages/Register/Register';
 import Footer from './components/shared/Footer/Footer';
@@ -14,9 +13,12 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/shared/Layout/Layout';
 import { UserProvider } from './context/UserContext';
-import AuthGuard from './components/Guards/AuthGuard';
-import AlreadyLoggedInGuard from './components/Guards/AlreadyLoggedInGuard';
 import '@ant-design/v5-patch-for-react-19';
+import Main from './components/pages/Main/Main';
+import AuthGuard from './Guards/AuthGuard';
+import AlreadyLoggedInGuard from './Guards/AlreadyLoggedInGuard';
+import SavedOffers from './components/pages/SavedOffers/SavedOffers';
+import NotFound from './components/pages/NotFound/NotFound';
 
 function App() {
   return (
@@ -32,12 +34,13 @@ function App() {
           <Route path="/offers/create" element={<CreateOffer />} />
           <Route path="/offers/edit/:id" element={<EditOffer />} />
           <Route path="/profile/edit/" element={<EditProfile />} />
+          <Route path="/savedOffers/:userId" element={<SavedOffers />} />
         </Route>
         <Route element={<AlreadyLoggedInGuard />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         </Route>
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Layout>

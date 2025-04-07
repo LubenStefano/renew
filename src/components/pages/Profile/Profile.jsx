@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './Profile.module.css';
 import { useUser } from '../../../context/UserContext';
-import { useGetOffersByUserId, useSavedOffers } from '../../../hooks/useOffers';
+import { useGetOffersByUserId } from '../../../hooks/useOffers';
 import ProductGrid from '../../shared/ProductGrid/ProductGrid';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDeleteUser, useUserById } from '../../../hooks/useAuth';
@@ -21,7 +21,6 @@ export default function Profile() {
     }, [user]);
 
     const { userOffers } = useGetOffersByUserId(userId);
-    const { savedOffers } = useSavedOffers(userId);
 
 
     console.log("Profile user state:", user);
@@ -32,8 +31,6 @@ export default function Profile() {
 
 
     const isCurrentUser = user.id === userId; // Check if the profile belongs to the logged-in user
-    console.log(`Is current user: ${user.id} and ${userId}`); // Debug log
-    console.log("User profile:", userById); // Debug log to verify user offers
 
     return (
         <section className={styles["profile-page"]}>
@@ -46,12 +43,6 @@ export default function Profile() {
                         <ProductGrid offers={userOffers} onProductClick={seeProduct} />
                     </div>
                 </div>
-                {isCurrentUser && ( // Conditionally render the "SAVED" section
-                    <div className={styles["saved-section"]}>
-                        <h3>SAVED</h3>
-                        <ProductGrid offers={savedOffers} onProductClick={seeProduct} />
-                    </div>
-                )}
             </div>
         </section>
     );

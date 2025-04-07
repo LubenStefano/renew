@@ -22,3 +22,15 @@
     margin-top: 30px;
 }
 
+@media (max-width: 768px) {
+  .button {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+
+  .see-collection {
+    font-size: 18px;
+    padding: 20px 40px;
+  }
+}
+

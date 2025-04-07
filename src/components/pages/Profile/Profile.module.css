@@ -6,15 +6,16 @@
     margin-top: 40px;
   }
   
-  .products-section,
-  .saved-section {
+  .products-section{
     margin-bottom: 40px;
   }
   
-  .products-section h3,
-  .saved-section h3 {
-    font-size: 24px;
+  .products-section h3 {
+    font-size: 40px;
     margin-bottom: 20px;
+    font-family: "Arvo", serif;
+    text-align: center;
+    font-weight: 400;
   }
   
   .product-grid {
@@ -62,4 +63,13 @@
   .product button:hover {
     background-color: #d69f5f;
   }
+
+  @media (max-width: 768px) {
+    .products-section h3 {
+      font-size: 28px;
+    }
   
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }

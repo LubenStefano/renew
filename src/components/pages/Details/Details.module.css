@@ -100,21 +100,7 @@
     color: #e6aa65;
     font-style: italic;
   }
-  
-  .edit{
-    background-color: #5cb85c;
-    color: white;
-  }
-  .delete{
-    background-color: #d9534f;
-    color: white;
-  }
-  .edit:hover{
-    background-color: #4cae4c;
-  }
-  .delete:hover{
-    background-color: #c9302c;
-  }
+
   .profile-picture {
     width: 50px;
     height: 50px;
@@ -128,3 +114,86 @@
     gap: 10px;
     cursor: pointer;
   }
+
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+  }
+
+  .product-image img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .big-container {
+    padding: 15px;
+  }
+
+  .product-details h1 {
+    font-size: 32px;
+  }
+
+  .product-container {
+    gap: 15px;
+  }
+
+  .product-info p {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .big-container {
+    padding: 10px;
+  }
+
+  .product-details h1 {
+    font-size: 28px; /* Slightly larger heading for better readability */
+  }
+
+  .product-container {
+    gap: 10px;
+  }
+
+  .product-info p {
+    font-size: 14px; /* Increase paragraph text size */
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  button {
+    font-size: 14px; /* Increase button text size */
+    padding: 6px 12px;
+  }
+
+  .seller-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+  }
+
+  .product-image img {
+    max-width: 80%; /* Reduce the image size for smaller screens */
+    margin: 0 auto; /* Center the image */
+    display: block; /* Ensure proper centering */
+  }
+
+  .description h2,
+  .category h2 {
+    font-size: 16px; /* Adjust section headings */
+  }
+}

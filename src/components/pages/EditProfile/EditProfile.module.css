@@ -62,4 +62,18 @@
   .edit-profile-form button:hover {
     background-color: #d69f5f;
   }
-  
+
+@media (max-width: 768px) {
+  .edit-profile-container {
+    padding: 40px;
+  }
+
+  .edit-profile-form h1 {
+    font-size: 28px;
+  }
+
+  .edit-profile-form input {
+    width: 100%;
+    padding: 12px; /* Adjust padding for better fit */
+  }
+}
