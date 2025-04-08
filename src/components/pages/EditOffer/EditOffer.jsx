@@ -54,6 +54,11 @@ export default function EditOffer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.price <= 0) {
+            handleError(null, "Price must be greater than 0.");
+            return;
+        }
+
         const updatedOffer = {
             name: formData.productName,
             condition: formData.condition,

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { request } from "../utils/request";
 import { useUser } from "../context/UserContext";
 import { useErrorHandler } from './useErrorHandler';
+import { showMessage } from "../utils/messageHandler";
 
 const collectionName = "offers";
 
@@ -39,6 +40,7 @@ export const useOffer = (offerId) => {
 
 export const useCreateOffer = () => {
     const { user } = useUser();
+    const { handleError } = useErrorHandler();
 
     const create = async (offerData) => {
         if (!user) {
@@ -49,7 +51,14 @@ export const useCreateOffer = () => {
         offerData.creator = user.id; // Store only the user ID
         offerData.creatorPfp = user.profilePicture; // Store the user's profile picture URL
 
-        return await request.create(collectionName, offerData);
+        try {
+            const createdOffer = await request.create(collectionName, offerData);
+            showMessage("success", "Offer created successfully!", "The offer has been created.");
+            return createdOffer;
+        } catch (error) {
+            handleError(error, "Failed to create offer.");
+            throw error; // Re-throw the error after handling
+        }
     };
 
     return { create };
@@ -64,9 +73,9 @@ export const useEditOffer = () => {
 
         try {
             await request.update(collectionName, offerId, offerData);
-            console.log(`Offer with ID ${offerId} has been updated successfully.`);
+            showMessage("success", "Offer edited successfully!", "The offer has been edited.");
         } catch (error) {
-            console.error("Error updating the offer:", error);
+           useErrorHandler(error, "Failed to edit offer.");
             throw error;
         }
     };
@@ -82,9 +91,9 @@ export const useDeleteOffer = () => {
 
         try {
             await request.delete(collectionName, offerId);
-            console.log(`Offer with ID ${offerId} has been deleted successfully.`);
+            showMessage("success", "Offer deleted successfully!", "The offer has been deleted.");
         } catch (error) {
-            console.error("Error deleting the offer:", error);
+            useErrorHandler(error, "Failed to delete offer.");
             throw error;
         }
     };
@@ -120,13 +129,20 @@ export const useOffersByCategory = (category) => {
 
 export const useSaveOffer = () => {
     const { user } = useUser();
+    const { handleError } = useErrorHandler();
 
     const saveOffer = async (offerId) => {
         if (!user) {
             throw new Error("User must be logged in to save an offer.");
         }
 
-        return await request.saveOffer(offerId, user.id);
+        try {
+            await request.saveOffer(offerId, user.id);
+            showMessage("success", "Offer saved successfully!", "The offer has been added to your saved list.");
+        } catch (error) {
+            handleError(error, "Failed to save offer.");
+            throw error; // Re-throw the error after handling
+        }
     };
 
     return { saveOffer };
@@ -144,15 +160,23 @@ export const useSavedOffers = () => {
 
     return { savedOffers };
 };
+
 export const useDeleteSavedOffer = () => {
     const { user } = useUser();
+    const { handleError } = useErrorHandler();
 
     const deleteSavedOffer = async (offerId) => {
         if (!user) {
             throw new Error("User must be logged in to delete a saved offer.");
         }
 
-        return await request.deleteSavedOffer(offerId, user.id);
+        try {
+            await request.deleteSavedOffer(offerId, user.id);
+            showMessage("success", "Saved offer deleted successfully!", "The saved offer has been removed.");
+        } catch (error) {
+            handleError(error, "Failed to delete saved offer.");
+            throw error;
+        }
     };
 
     return { deleteSavedOffer };
@@ -184,29 +208,33 @@ export const useGetOffersByUserId = (userId) => {
 };
 
 export const editOffer = async (offerId, offerData) => {
+    const { handleError } = useErrorHandler();
+
     if (!offerId || !offerData) {
         throw new Error("offerId and offerData are required for editing an offer.");
     }
 
     try {
         await request.update(collectionName, offerId, offerData);
-        console.log(`Offer with ID ${offerId} has been updated successfully.`);
+        showMessage("success", "Offer edited successfully!", "The offer has been updated.");
     } catch (error) {
-        console.error("Error updating the offer:", error);
+        handleError(error, "Failed to edit offer.");
         throw error;
     }
-}
+};
 
 export const deleteOffer = async (offerId) => {
+    const { handleError } = useErrorHandler();
+
     if (!offerId) {
         throw new Error("offerId is required for deleting an offer.");
     }
 
     try {
         await request.delete(collectionName, offerId);
-        console.log(`Offer with ID ${offerId} has been deleted successfully.`);
+        showMessage("success", "Offer deleted successfully!", "The offer has been removed.");
     } catch (error) {
-        console.error("Error deleting the offer:", error);
+        handleError(error, "Failed to delete offer.");
         throw error;
     }
-}
+};

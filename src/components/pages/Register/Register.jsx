@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRegister } from "../../../hooks/useAuth";
 import styles from "./Register.module.css";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useUser } from "../../../context/UserContext";
 import { useErrorHandler } from "../../../hooks/useErrorHandler";
 
@@ -31,6 +31,10 @@ export default function Register() {
         if (formData.password !== formData.rePassword) {
             setPasswordError("Passwords do not match.");
             handleError(null, "Passwords do not match.");
+            return;
+        }
+        if (!/^\d{10}$/.test(formData.phone)) {
+            handleError(null, "Phone number must be exactly 10 digits.");
             return;
         }
         setPasswordError(null);
@@ -112,7 +116,7 @@ export default function Register() {
                 </form>
                 {passwordError && <p className={styles["error"]}>{passwordError}</p>}
                 <p>
-                    Have an account? <a href="#">Login now</a>
+                    Have an account? <Link to="/login">Login now</Link>
                 </p>
             </div>
             <div className={styles["register-image"]}>

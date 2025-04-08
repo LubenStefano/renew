@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLogin } from "../../../hooks/useAuth";
 import styles from "./Login.module.css";
 import { useErrorHandler } from "../../../hooks/useErrorHandler";
+import { Link } from "react-router";
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
@@ -51,7 +52,7 @@ export default function Login() {
                     <button type="submit">LOGIN</button>
                 </form>
                 <p>
-                    Don't have an account? <a href="#">Register now</a>
+                    Don't have an account? <Link to="/register">Register now</Link>
                 </p>
             </div>
             <div className={styles["login-image"]}>

@@ -3,6 +3,7 @@ import { useUser } from '../../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { useErrorHandler } from '../../../hooks/useErrorHandler';
 import styles from './EditProfile.module.css';
+import { showMessage } from '../../../utils/messageHandler';
 
 export default function EditProfile() {
     const { user, setUser } = useUser();
@@ -36,9 +37,13 @@ export default function EditProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!/^\d{10}$/.test(formData.phone)) {
+            handleError(null, "Phone number must be exactly 10 digits.");
+            return;
+        }
         try {
             await setUser(formData);
-            console.log("Profile updated successfully!");
+            showMessage("success", "Profile updated successfully!", "Your profile has been updated successfully.");
             navigate(`/profile/${user.id}`);
         } catch (err) {
             handleError(err, "Failed to update profile.");

@@ -13,7 +13,12 @@ export default function CreateOffer() {
         event.preventDefault();
         const formData = new FormData(event.target);
         const offerData = Object.fromEntries(formData);
-    
+
+        if (offerData.price <= 0) {
+            handleError(null, "Price must be greater than 0.");
+            return;
+        }
+
         try {
             await create(offerData);
             navigate("/offers");

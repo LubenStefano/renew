@@ -21,6 +21,7 @@ body {
 .hero-content {
   width: 50%;
   margin-right: 150px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -170,11 +171,12 @@ body {
 
 @media (max-width: 768px) {
   .hero h1 {
-    font-size: 40px;
+    font-size: 50px;
   }
 
   .heroImg {
-    display: none; /* Hide the image on phones */
+    width: 50%;
+    top: 20px;
   }
 
   .hideCategoriesOnMobile {
@@ -206,7 +208,7 @@ body {
 @media (max-width: 480px) {
   .hero img {
     width: 70%;
-    top: 30px;
+    top: 10px;
   }
 
   .categories {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Details.module.css';
-import { useOffer, useSaveOffer, useDeleteSavedOffer, useSavedOffers, useEditOffer, useDeleteOffer } from '../../../hooks/useOffers';
+import { useOffer, useSaveOffer, useDeleteSavedOffer, useSavedOffers, useDeleteOffer } from '../../../hooks/useOffers';
 import { useNavigate, useParams } from 'react-router';
 import { useUser } from '../../../context/UserContext';
 import Button from '../../shared/Button/Button';
@@ -121,9 +121,9 @@ export default function Details() {
             <div className={styles["product-info"]}>
               <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
               <p className={styles["location"]}>SELLER:</p>
-              <div className={styles["seller-info"]}  onClick={profileHandler}>
-              <img src={creator.profilePicture}  className={styles["profile-picture"]}/>
-              <p className={styles["seller"]}><span>{creator.name}</span></p>
+              <div className={styles["seller-info"]} onClick={profileHandler}>
+                <img src={creator.profilePicture} className={styles["profile-picture"]} />
+                <p className={styles["seller"]}><span>{creator.name}</span></p>
               </div>
               <p className={styles["contacts"]}>
                 contacts:<br />
@@ -143,24 +143,26 @@ export default function Details() {
             <h2>CATEGORY:</h2>
             <p>{offer.category}</p>
           </div>
-          <div className={styles["actions"]}>
-            {user?.id === offer.creator ? (
-              <>
-                <Button text="EDIT OFFER" className={styles["edit"]} onClick={handleEditClick} />
-                <Button text="DELETE OFFER" className={styles["delete"]} onClick={handleDeleteClick} />
-              </>
-            ) : (
-              <>
-                <Button text="CALL NOW" className={styles["call"]} onClick={handleCallClick} />
-                <Button text="EMAIL NOW" className={styles["email"]} onClick={handleEmailClick} />
-                <Button
-                  onClick={toggleSaveHandler}
-                  text={isSaved ? "UNSAVE" : "SAVE NOW"}
-                  className={isSaved ? styles["unsave"] : styles["save"]}
-                />
-              </>
-            )}
-          </div>
+          {user && ( // Only render buttons if user exists
+            <div className={styles["actions"]}>
+              {user?.id === offer.creator ? (
+                <>
+                  <Button text="EDIT OFFER" className={styles["edit"]} onClick={handleEditClick} />
+                  <Button text="DELETE OFFER" className={styles["delete"]} onClick={handleDeleteClick} />
+                </>
+              ) : (
+                <>
+                  <Button text="CALL NOW" className={styles["call"]} onClick={handleCallClick} />
+                  <Button text="EMAIL NOW" className={styles["email"]} onClick={handleEmailClick} />
+                  <Button
+                    onClick={toggleSaveHandler}
+                    text={isSaved ? "UNSAVE" : "SAVE NOW"}
+                    className={isSaved ? styles["unsave"] : styles["save"]}
+                  />
+                </>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </main>

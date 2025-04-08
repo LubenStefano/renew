@@ -2,18 +2,34 @@ import React from 'react';
 import styles from './Footer.module.css';
 import { Link } from 'react-router-dom';
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { useUser } from '../../../context/UserContext';
 
 export default function () {
+  const { user } = useUser();
+
   return (
     <footer className={styles.footer}>
       <div className={styles['footer-content']}>
         <div className={styles['footer-logo']}>
           <h2>ReNew</h2>
-          <p>
-            ReNew is your trusted platform for buying and selling secondhand products. 
-            We believe in sustainability and giving products a second life, reducing waste, 
-            and promoting a greener future.
-          </p>
+          <div>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/offers">Products</Link></li>
+              {!user && (
+                <>
+                  <li><Link to="/login">Login</Link></li>
+                  <li><Link to="/register">Register</Link></li>
+                </>
+              )}
+              {user && (
+                <>
+                  <li><Link to={`/profile/${user.id}`}>Profile</Link></li>
+                  <li><Link to={`/savedOffers/${user.id}`}>Saved Offers</Link></li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
         <div className={styles['footer-contacts']}>
           <h3>CONTACTS</h3>

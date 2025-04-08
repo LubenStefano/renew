@@ -28,8 +28,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/offers/:category" element={<Offers />} />
-        <Route element={<AuthGuard />}>
           <Route path="/offers/details/:id" element={<Details />} />
+        <Route element={<AuthGuard />}>
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/offers/create" element={<CreateOffer />} />
           <Route path="/offers/edit/:id" element={<EditOffer />} />

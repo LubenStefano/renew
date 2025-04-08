@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { showMessage } from "./messageHandler";
 
 export const handleHttpError = (error, customMessage) => {
   const status = error.status;
@@ -35,10 +35,5 @@ export const handleGenericError = (error, customMessage) => {
 };
 
 const showError = (title, description) => {
-  notification.error({
-    message: title,
-    description: description || 'Възникна грешка.',
-    duration: 5,
-    placement: 'topRight',
-  });
+  showMessage('error', title, description);
 };

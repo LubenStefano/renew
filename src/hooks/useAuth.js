@@ -3,6 +3,7 @@ import { request } from "../utils/request";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { useErrorHandler } from './useErrorHandler';
+import { showMessage } from "../utils/messageHandler";
 
 export const useRegister = () => {
     const [error, setError] = useState(null);
@@ -20,8 +21,9 @@ export const useRegister = () => {
             console.log("User logged in automatically:", loggedInUser);
 
             setUser(loggedInUser); // Populate UserContext with full user data
-            navigate("/offers");
 
+            showMessage("success", "Registration successful!", "You have registered successfully"); // Show success message
+            navigate("/offers");
             return loggedInUser;
         } catch (err) {
             handleError(err, 'Registration failed.');
@@ -88,6 +90,7 @@ export const useDeleteUser = () => {
             await request.deleteUser(user.id); // Assuming you have a deleteUser method in your request module
             setUser(null); // Immediately clear user data in context
             await request.logoutUser(); // Log out the user after deletion
+            showMessage("success", "User deleted successfully!", "Your account has been deleted."); // Show success message
             navigate("/");
         } catch (err) {
             handleError(err, 'Delete user failed.');
@@ -106,7 +109,7 @@ export const useUpdateUser = () => {
         try {
             const updatedUser = await request.updateUser(user.id, updatedData);
             setUser({ ...user, ...updatedUser }); // Ensure a new object reference is created
-            console.log("User updated successfully:", updatedUser); // Debug log
+            showMessage("success", "User updated successfully!", "Your profile has been updated."); // Show success message
         } catch (err) {
             handleError(err, 'Update user failed.');
             console.error("Update user error:", err);
@@ -116,28 +119,6 @@ export const useUpdateUser = () => {
     return { updateUser };
 };
 
-export const useCreateOffer = () => {
-    const { user } = useUser();
-    const { handleError } = useErrorHandler();
-
-    const create = async (offerData) => {
-        try {
-            if (!user) {
-                throw new Error("User must be logged in to create an offer.");
-            }
-
-            offerData.createdAt = new Date().toISOString();
-            offerData.creator = user.id; // Ensure only the user ID is stored
-
-            return await request.create(collectionName, offerData);
-        } catch (err) {
-            handleError(err, 'Create offer failed.');
-            console.error("Create offer error:", err);
-        }
-    };
-
-    return { create };
-};
 
 export const useUserById = (userId) => {
     const [userById, setUserById] = useState(null);
