@@ -5,7 +5,7 @@ import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
 
 export default function InfiniteCarousel({ autoSlide = true, interval = 10000, itemsToShow = 1 }) {
-    const { latestOffers: products } = useLatestOffers();
+    const { latestOffers: products } = useLatestOffers(); // Always call this hook
     const navigate = useNavigate();
     const carouselRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(itemsToShow); // Start at the first cloned set
@@ -59,6 +59,14 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
         carousel.style.transition = 'transform 0.5s ease-in-out';
         carousel.style.transform = `translateX(-${itemWidth * currentIndex}px)`;
     }, [currentIndex, itemsToShow]);
+
+    if (!products || products.length === 0) {
+        return (
+            <div className={styles.noProductsContainer}>
+                <p className={styles.noProductsMessage}>No products available at the moment. Please check back later!</p>
+            </div>
+        );
+    }
 
     const clonedItems = [
         ...products.slice(-itemsToShow), // Clone last set

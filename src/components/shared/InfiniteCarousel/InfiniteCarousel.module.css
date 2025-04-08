@@ -90,3 +90,20 @@
     flex: 0 0 calc(90% - 20px);
   }
 }
+
+.noProductsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-color: #f9f9f9;
+  border: 2px dashed #e6aa65;
+  border-radius: 8px;
+}
+
+.noProductsMessage {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  padding: 20px;
+}
