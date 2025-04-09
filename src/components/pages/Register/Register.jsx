@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useRegister } from "../../../hooks/useAuth";
 import styles from "./Register.module.css";
 import { Link, useNavigate } from "react-router";
-import { useUser } from "../../../context/UserContext";
 import { useErrorHandler } from "../../../hooks/useErrorHandler";
 
 export default function Register() {

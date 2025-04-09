@@ -16,7 +16,6 @@ export default function Profile() {
 
     useEffect(() => {
         const controller = new AbortController();
-        const signal = controller.signal;
 
         if (user) {
             console.log("User state in Profile:", user); 

@@ -33,7 +33,6 @@ export default function Details() {
 
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
 
     if (savedOffers && offer) {
       setIsSaved(savedOffers.some(savedOffer => savedOffer.id === offer.id));
