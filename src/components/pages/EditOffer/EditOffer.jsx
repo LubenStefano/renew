@@ -74,7 +74,6 @@ export default function EditOffer() {
 
         try {
             await edit(id, updatedOffer);
-            console.log('Offer updated successfully!');
             navigate(`/offers/details/${id}`);
         } catch (error) {
             handleError(error, 'Failed to update offer.');

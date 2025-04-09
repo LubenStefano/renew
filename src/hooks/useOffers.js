@@ -137,7 +137,6 @@ export const useLatestOffers = (count = 10) => {
         }
     }, [count]);
 
-    console.log("Latest offers fetched:", latestOffers);
     return { latestOffers };
 };
 

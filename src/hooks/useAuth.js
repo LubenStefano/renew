@@ -15,10 +15,8 @@ export const useRegister = () => {
         try {
             setError(null);
             const user = await request.registerUser(email, password, additionalData);
-            console.log("User registered:", user);
 
             const loggedInUser = await request.loginUser(email, password);
-            console.log("User logged in automatically:", loggedInUser);
 
             setUser(loggedInUser); // Populate UserContext with full user data
 
@@ -44,8 +42,7 @@ export const useLogin = () => {
         try {
             setError(null);
             const userData = await request.loginUser(email, password);
-            console.log("User logged in:", userData);
-
+            
             setUser(userData); // Populate UserContext with full user data
             navigate("/offers");
 

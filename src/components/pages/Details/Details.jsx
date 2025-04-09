@@ -18,17 +18,6 @@ export default function Details() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    if (user) {
-      console.log("User state in Details:", user); // Debug log
-    }
-
-    return () => controller.abort(); // Cleanup function
-  }, [user]);
-
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -40,8 +29,6 @@ export default function Details() {
 
     return () => controller.abort(); // Cleanup function
   }, [savedOffers, offer]);
-
-  console.log(offer);
 
   if (!offer || !creator) {
     return (
@@ -64,7 +51,6 @@ export default function Details() {
     if (isSaved) {
       deleteSavedOffer(offer.id)
         .then(() => {
-          console.log("Offer unsaved successfully!");
           setIsSaved(false);
         })
         .catch((error) => {
@@ -73,7 +59,6 @@ export default function Details() {
     } else {
       saveOffer(offer.id)
         .then(() => {
-          console.log("Offer saved successfully!");
           setIsSaved(true);
         })
         .catch((error) => {
@@ -106,7 +91,6 @@ export default function Details() {
     if (window.confirm("Are you sure you want to delete this offer?")) {
       remove(offer.id)
         .then(() => {
-          console.log("Offer deleted successfully!");
           navigate(`/profile/${offer.creator}`);
         })
         .catch((error) => {

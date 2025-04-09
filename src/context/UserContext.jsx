@@ -13,7 +13,6 @@ export const UserProvider = ({ children }) => {
     const updateUser = async (userData) => {
         try {
             if (!user || !user.id) {
-                console.log("User is loading..."); // Debug log  
                 return;
             }
 
@@ -31,7 +30,6 @@ export const UserProvider = ({ children }) => {
             if (updatedUserDoc.exists()) {
                 const updatedUser = { id: user.id, ...updatedUserDoc.data() };
                 setUser(updatedUser); // Update the context with the latest user data
-                console.log("Updated user in context:", updatedUser); // Debug log
             }
         } catch (error) {
             console.error("Error updating user in context:", error);

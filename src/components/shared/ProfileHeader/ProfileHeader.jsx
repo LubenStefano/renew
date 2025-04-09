@@ -35,7 +35,6 @@ export default function ProfileHeader({ userById, isCurrentUser }) {
         if (window.confirm("Are you sure you want to delete your profile? This action cannot be undone.")) {
             deleteUser(userById.id)
                 .then(() => {
-                    console.log("User deleted successfully!");
                     navigate('/');
                 })
                 .catch((error) => {

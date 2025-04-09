@@ -23,7 +23,6 @@ export default function Products() {
         const signal = controller.signal;
 
         if (categoryQuery) {
-            console.log(`Fetching products for category: ${categoryQuery}`);
             fetchOffers(signal).catch((error) => {
                 if (error.name !== 'AbortError') {
                     console.error('Failed to fetch offers:', error);

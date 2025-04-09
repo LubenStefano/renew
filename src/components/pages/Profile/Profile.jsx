@@ -14,20 +14,7 @@ export default function Profile() {
     const { userId } = useParams(); 
     const { userById } = useUserById(userId); 
 
-    useEffect(() => {
-        const controller = new AbortController();
-
-        if (user) {
-            console.log("User state in Profile:", user); 
-        }
-
-        return () => controller.abort(); // Cleanup function
-    }, [user]);
-
     const { userOffers } = useGetOffersByUserId(userId);
-
-
-    console.log("Profile user state:", user);
 
     const seeProduct = (id) => {
         navigate(`/offers/details/${id}`);

@@ -15,9 +15,7 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
         // Fetch 12 offers once at mount
         const fetchProducts = async () => {
             try {
-                console.log('Fetching products...');
                 const fetchedProducts = await request.getLatest('offers', 12);
-                console.log('Fetched products:', fetchedProducts);
                 setProducts([
                     ...fetchedProducts.slice(-itemsToShow), // Clone last set
                     ...fetchedProducts,

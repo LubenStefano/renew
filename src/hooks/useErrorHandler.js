@@ -86,7 +86,6 @@ else if (error?.code) {
   };
 
   const showError = (title, description) => {
-    console.log('[Notification Triggered]:', { title, description }); // Debug log
     notification.error({
       message: title,
       description: description || 'An error occurred.',
