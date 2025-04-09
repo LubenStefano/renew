@@ -4,13 +4,15 @@ import { auth, db } from "../firebase";
 import { useErrorHandler } from '../hooks/useErrorHandler';
 
 export const request = {
-  async getAll(collectionName) {
+  async getAll(collectionName, signal) {
     const { handleError } = useErrorHandler();
     try {
-      const snapshot = await getDocs(collection(db, collectionName));
+      const snapshot = await getDocs(collection(db, collectionName), { signal });
       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
-      handleError(error, 'Failed to fetch all documents.');
+      if (error.name !== 'AbortError') {
+        handleError(error, 'Failed to fetch all documents.');
+      }
     }
   },
 
@@ -34,18 +36,20 @@ export const request = {
     }
   },
 
-  async getById(collectionName, id) {
+  async getById(collectionName, id, signal) {
     const { handleError } = useErrorHandler();
     try {
       const docRef = doc(db, collectionName, id);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(docRef, { signal });
       if (docSnap.exists()) {
           return { id: docSnap.id, ...docSnap.data() };
       } else {
           throw new Error(`No document found in ${collectionName} with ID ${id}`);
       }
     } catch (error) {
-      handleError(error, `Failed to fetch document with ID ${id}.`);
+      if (error.name !== 'AbortError') {
+        handleError(error, `Failed to fetch document with ID ${id}.`);
+      }
     }
   },
 
@@ -64,7 +68,11 @@ export const request = {
       });
       return user;
     } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        throw new Error('This email is already registered. Please log in or use a different email.');
+      }
       handleError(error, 'Failed to register user.');
+      throw error; // Ensure the error propagates to the caller
     }
   },
 
@@ -142,30 +150,34 @@ export const request = {
     }
   },
 
-  async getByCategory(collectionName, category) {
+  async getByCategory(collectionName, category, signal) {
     const { handleError } = useErrorHandler();
     try {
       const q = query(collection(db, collectionName), where("category", "==", category));
-      const snapshot = await getDocs(q);
+      const snapshot = await getDocs(q, { signal });
       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
-      handleError(error, 'Failed to fetch documents by category.');
+      if (error.name !== 'AbortError') {
+        handleError(error, 'Failed to fetch documents by category.');
+      }
     }
   },
 
-  async getSavedOffers(userId) {
+  async getSavedOffers(userId, signal) {
     const { handleError } = useErrorHandler();
     try {
       const userDocRef = doc(db, "users", userId);
-      const userDoc = await getDoc(userDocRef);
+      const userDoc = await getDoc(userDocRef, { signal });
       if (!userDoc.exists()) {
         throw new Error("User data not found in Firestore.");
       }
       const savedOffers = userDoc.data().savedOffers || [];
-      const offers = await Promise.all(savedOffers.map(offerId => this.getById("offers", offerId)));
+      const offers = await Promise.all(savedOffers.map(offerId => this.getById("offers", offerId, signal)));
       return offers;
     } catch (error) {
-      handleError(error, 'Failed to fetch saved offers.');
+      if (error.name !== 'AbortError') {
+        handleError(error, 'Failed to fetch saved offers.');
+      }
     }
   },
 

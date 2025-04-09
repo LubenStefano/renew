@@ -14,6 +14,10 @@ export default function CreateOffer() {
         const formData = new FormData(event.target);
         const offerData = Object.fromEntries(formData);
 
+        if (!offerData.name.trim()) {
+            handleError(null, "Product name cannot be empty or just spaces.");
+            return;
+        }
         if (offerData.price <= 0) {
             handleError(null, "Price must be greater than 0.");
             return;

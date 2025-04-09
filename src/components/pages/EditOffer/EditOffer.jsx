@@ -54,6 +54,10 @@ export default function EditOffer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.productName.trim()) {
+            handleError(null, "Product name cannot be empty or just spaces.");
+            return;
+        }
         if (formData.price <= 0) {
             handleError(null, "Price must be greater than 0.");
             return;
@@ -147,7 +151,7 @@ export default function EditOffer() {
                                 <option value="electronics">Electronics</option>
                                 <option value="furniture">Furniture</option>
                                 <option value="clothing">Clothing</option>
-                                <option value="other">Other</option>
+                                <option value="home">Home</option>
                             </select>
                         </div>
                     </div>

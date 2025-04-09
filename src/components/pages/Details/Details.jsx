@@ -19,17 +19,27 @@ export default function Details() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(user){
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    if (user) {
       console.log("User state in Details:", user); // Debug log
     }
+
+    return () => controller.abort(); // Cleanup function
   }, [user]);
 
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     if (savedOffers && offer) {
       setIsSaved(savedOffers.some(savedOffer => savedOffer.id === offer.id));
     }
+
+    return () => controller.abort(); // Cleanup function
   }, [savedOffers, offer]);
 
   console.log(offer);

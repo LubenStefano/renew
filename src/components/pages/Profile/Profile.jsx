@@ -15,9 +15,14 @@ export default function Profile() {
     const { userById } = useUserById(userId); 
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (user) {
             console.log("User state in Profile:", user); 
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [user]);
 
     const { userOffers } = useGetOffersByUserId(userId);

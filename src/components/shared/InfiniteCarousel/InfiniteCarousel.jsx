@@ -1,15 +1,35 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './InfiniteCarousel.module.css';
-import { useLatestOffers } from '../../../hooks/useOffers';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { request } from '../../../utils/request'; // Import request utility
 
 export default function InfiniteCarousel({ autoSlide = true, interval = 10000, itemsToShow = 1 }) {
-    const { latestOffers: products } = useLatestOffers(); // Always call this hook
+    const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const carouselRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(itemsToShow); // Start at the first cloned set
     const [isTransitioning, setIsTransitioning] = useState(false);
+
+    useEffect(() => {
+        // Fetch 12 offers once at mount
+        const fetchProducts = async () => {
+            try {
+                console.log('Fetching products...');
+                const fetchedProducts = await request.getLatest('offers', 12);
+                console.log('Fetched products:', fetchedProducts);
+                setProducts([
+                    ...fetchedProducts.slice(-itemsToShow), // Clone last set
+                    ...fetchedProducts,
+                    ...fetchedProducts.slice(0, itemsToShow), // Clone first set
+                ]);
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+            }
+        };
+
+        fetchProducts();
+    }, [itemsToShow]);
 
     const handleNext = () => {
         if (isTransitioning) return;
@@ -30,14 +50,14 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
 
         const handleTransitionEnd = () => {
             setIsTransitioning(false);
-            if (currentIndex >= products.length + itemsToShow) {
+            if (currentIndex >= products.length - itemsToShow) {
                 setCurrentIndex(itemsToShow); // Reset to the first real set
                 carousel.style.transition = 'none';
                 carousel.style.transform = `translateX(-${itemWidth * itemsToShow}px)`;
             } else if (currentIndex < itemsToShow) {
-                setCurrentIndex(products.length); // Reset to the last real set
+                setCurrentIndex(products.length - itemsToShow * 2); // Reset to the last real set
                 carousel.style.transition = 'none';
-                carousel.style.transform = `translateX(-${itemWidth * products.length}px)`;
+                carousel.style.transform = `translateX(-${itemWidth * (products.length - itemsToShow * 2)}px)`;
             }
         };
 
@@ -68,12 +88,6 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
         );
     }
 
-    const clonedItems = [
-        ...products.slice(-itemsToShow), // Clone last set
-        ...products,
-        ...products.slice(0, itemsToShow), // Clone first set
-    ];
-
     const renderItem = (product) => (
         <div key={product.id} className={styles.carouselItem}>
             <img src={product.img} alt={product.name} className={styles.carouselImage} />
@@ -86,7 +100,7 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
     return (
         <div className={styles.carouselContainer}>
             <div className={styles.carousel} ref={carouselRef}>
-                {clonedItems.map((item, index) => (
+                {products.map((item, index) => (
                     <div key={index} className={styles.carouselItem} style={{ flex: `0 0 ${100 / itemsToShow}%` }}>
                         {renderItem(item)}
                     </div>

@@ -37,6 +37,10 @@ export default function EditProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.name.trim()) {
+            handleError(null, "Name cannot be empty or just spaces.");
+            return;
+        }
         if (!/^\d{10}$/.test(formData.phone)) {
             handleError(null, "Phone number must be exactly 10 digits.");
             return;

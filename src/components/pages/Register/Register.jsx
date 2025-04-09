@@ -28,13 +28,17 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.password !== formData.rePassword) {
-            setPasswordError("Passwords do not match.");
-            handleError(null, "Passwords do not match.");
+        if (!formData.name.trim()) {
+            handleError(null, "Name cannot be empty or just spaces.");
             return;
         }
         if (!/^\d{10}$/.test(formData.phone)) {
             handleError(null, "Phone number must be exactly 10 digits.");
+            return;
+        }
+        if (formData.password !== formData.rePassword) {
+            setPasswordError("Passwords do not match.");
+            handleError(null, "Passwords do not match.");
             return;
         }
         setPasswordError(null);

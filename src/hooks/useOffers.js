@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { request } from "../utils/request";
 import { useUser } from "../context/UserContext";
 import { useErrorHandler } from './useErrorHandler';
@@ -9,11 +9,27 @@ const collectionName = "offers";
 export const useOffers = () => {
     const [offers, setOffers] = useState();
 
-    useEffect(() => {
-        request.getAll(collectionName).then(setOffers);
-    }, [offers]);
+    const fetchOffers = async (signal) => {
+        try {
+            const fetchedOffers = await request.getAll(collectionName, signal);
+            setOffers(fetchedOffers);
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                console.error('Failed to fetch offers:', error);
+            }
+        }
+    };
 
-    return { offers };
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        fetchOffers(signal);
+
+        return () => controller.abort(); // Cleanup function
+    }, []);
+
+    return { offers, fetchOffers }; // Expose fetchOffers
 };
 
 export const useOffer = (offerId) => {
@@ -22,17 +38,26 @@ export const useOffer = (offerId) => {
     const { handleError } = useErrorHandler();
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (offerId) {
-            request.getById(collectionName, offerId)
+            request.getById(collectionName, offerId, signal)
                 .then(async (fetchedOffer) => {
                     setOffer(fetchedOffer);
                     if (typeof fetchedOffer.creator === "string") {
-                        const creatorData = await request.getById("users", fetchedOffer.creator);
+                        const creatorData = await request.getById("users", fetchedOffer.creator, signal);
                         setCreator(creatorData);
                     }
                 })
-                .catch((error) => handleError(error, 'Failed to fetch offer.'));
+                .catch((error) => {
+                    if (error.name !== 'AbortError') {
+                        handleError(error, 'Failed to fetch offer.');
+                    }
+                });
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [offerId]); // Automatically updates `offer` when `offerId` changes
 
     return { offer, creator }; // Return both offer and creator
@@ -103,10 +128,15 @@ export const useDeleteOffer = () => {
 
 export const useLatestOffers = (count = 10) => {
     const [latestOffers, setLatestOffers] = useState([]);
+    const hasFetched = useRef(false); // Prevent repeated fetching
 
     useEffect(() => {
-        request.getLatest(collectionName, count).then(setLatestOffers);
+        if (!hasFetched.current) {
+            hasFetched.current = true;
+            request.getLatest(collectionName, count).then(setLatestOffers);
+        }
     }, [count]);
+
     console.log("Latest offers fetched:", latestOffers);
     return { latestOffers };
 };
@@ -115,13 +145,20 @@ export const useOffersByCategory = (category) => {
     const [offersByCategory, setOffersByCategory] = useState();
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (category) {
-            request.getByCategory(collectionName, category)
+            request.getByCategory(collectionName, category, signal)
                 .then(setOffersByCategory)
                 .catch((error) => {
-                    console.error("Error fetching offers by category:", error);
+                    if (error.name !== 'AbortError') {
+                        console.error("Error fetching offers by category:", error);
+                    }
                 });
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [category]);
 
     return { offersByCategory };
@@ -153,9 +190,18 @@ export const useSavedOffers = () => {
     const [savedOffers, setSavedOffers] = useState();
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (user) {
-            request.getSavedOffers(user.id).then(setSavedOffers);
+            request.getSavedOffers(user.id, signal).then(setSavedOffers).catch((error) => {
+                if (error.name !== 'AbortError') {
+                    console.error("Error fetching saved offers:", error);
+                }
+            });
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [user]);
 
     return { savedOffers };
@@ -199,9 +245,18 @@ export const useGetOffersByUserId = (userId) => {
     const [userOffers, setUserOffers] = useState();
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (userId) {
-            request.getByUser(collectionName, userId).then(setUserOffers);
+            request.getByUser(collectionName, userId, signal).then(setUserOffers).catch((error) => {
+                if (error.name !== 'AbortError') {
+                    console.error("Error fetching offers by user:", error);
+                }
+            });
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [userId]);
 
     return { userOffers };

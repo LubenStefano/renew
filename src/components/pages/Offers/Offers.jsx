@@ -19,12 +19,25 @@ export default function Products() {
     const [filteredOffers, setFilteredOffers] = useState([]);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (categoryQuery) {
             console.log(`Fetching products for category: ${categoryQuery}`);
+            fetchOffers(signal).catch((error) => {
+                if (error.name !== 'AbortError') {
+                    console.error('Failed to fetch offers:', error);
+                }
+            });
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [categoryQuery]);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         if (categoryQuery && offers) {
             const filtered = offers.filter(
                 (offer) => offer.category.toLowerCase() === categoryQuery.toLowerCase()
@@ -33,6 +46,8 @@ export default function Products() {
         } else {
             setFilteredOffers(offers);
         }
+
+        return () => controller.abort(); // Cleanup function
     }, [categoryQuery, offers]);
 
     return (
