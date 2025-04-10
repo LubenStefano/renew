@@ -82,6 +82,7 @@ export default function Register() {
                                 placeholder="e.g: https://example.com/image.jpg"
                                 value={formData.profilePicture}
                                 onChange={handleChange}
+                                required
                             />
                         </div>
                         <div className={styles["form-section"]}>
@@ -95,7 +96,7 @@ export default function Register() {
                                 onChange={handleChange}
                                 required
                             />
-                            <label htmlFor="password">password:</label>
+                            <label htmlFor="password">password: <span style={{ color: "gray", fontSize: "15px" }}>(at least 6 characters)</span></label>
                             <input
                                 type="password"
                                 id="password"

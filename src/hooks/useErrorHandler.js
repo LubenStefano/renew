@@ -65,7 +65,7 @@ else if (error?.code) {
       showError('Email Already In Use', 'This email is already registered. Please log in or use a different email.');
       break;
     case 'auth/weak-password':
-      showError('Weak Password', 'Your password is too weak. Please use a stronger password.');
+      showError('Weak Password', 'Your password is too weak. Password should be 6 characters.');
       break;
     case 'auth/too-many-requests':
       showError('Too Many Attempts', 'You have made too many attempts. Please try again later.');

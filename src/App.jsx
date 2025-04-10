@@ -28,7 +28,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/offers/:category" element={<Offers />} />
-          <Route path="/offers/details/:id" element={<Details />} />
+        <Route path="/offers/details/:id" element={<Details />} />
+
         <Route element={<AuthGuard />}>
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/offers/create" element={<CreateOffer />} />
@@ -36,10 +37,12 @@ function App() {
           <Route path="/profile/edit/" element={<EditProfile />} />
           <Route path="/savedOffers/:userId" element={<SavedOffers />} />
         </Route>
+
         <Route element={<AlreadyLoggedInGuard />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

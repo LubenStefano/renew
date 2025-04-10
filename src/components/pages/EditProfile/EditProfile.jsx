@@ -67,6 +67,7 @@ export default function EditProfile() {
                             id="name"
                             value={formData.name}
                             onChange={handleChange}
+                            placeholder="e.g: Ivan Petrov"
                             required
                         />
                     </div>
@@ -77,6 +78,7 @@ export default function EditProfile() {
                             id="phone"
                             value={formData.phone}
                             onChange={handleChange}
+                            placeholder="e.g: 0885 765 765"
                             required
                         />
                     </div>
@@ -87,6 +89,8 @@ export default function EditProfile() {
                             id="profilePicture"
                             value={formData.profilePicture}
                             onChange={handleChange}
+                            placeholder="e.g: https://example.com/profile.jpg"
+                            required
                         />
                     </div>
                     <button type="submit">EDIT PROFILE</button>
