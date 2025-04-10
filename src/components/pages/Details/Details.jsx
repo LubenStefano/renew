@@ -112,18 +112,18 @@ export default function Details() {
               />
             </div>
             <div className={styles["product-info"]}>
-              <p className={styles["price"]}>PRICE: <span>{offer.price}$</span></p>
-              <p className={styles["location"]}>SELLER:</p>
+              <p className={styles["price"]}><b>PRICE:</b> <span>{offer.price}$</span></p>
+              <p className={styles["location"]}><b>SELLER:</b></p>
               <div className={styles["seller-info"]} onClick={profileHandler}>
                 <img src={creator.profilePicture} className={styles["profile-picture"]} />
                 <p className={styles["seller"]}><span>{creator.name}</span></p>
               </div>
               <p className={styles["contacts"]}>
-                contacts:<br />
+                <b>contacts:</b><br />
                 gsm: {creator.phone}<br />
                 email: {creator.email}
               </p>
-              <p className={styles["condition"]}>CONDITION: <span>{offer.condition}</span></p>
+              <p className={styles["condition"]}><b>CONDITION:</b> <span>{offer.condition}</span></p>
             </div>
           </div>
           <div className={styles["description"]}>

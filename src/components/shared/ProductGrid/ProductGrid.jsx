@@ -17,7 +17,7 @@ export default function ProductGrid({ offers, onProductClick }) {
         );
     }
     if (offers.length === 0) {
-        return <p>No products available.</p>;
+        return <p className={styles["no-products"]}>No products available.</p>;
     }
 
     return (

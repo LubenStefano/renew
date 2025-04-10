@@ -6,6 +6,9 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .profile-picture {
@@ -13,7 +16,10 @@
     height: 100px;
     background-color: #ccc;
     border-radius: 50%;
+    object-fit: cover;
+    overflow: hidden;
 }
+
 
 .profile-info {
     flex: 1;
