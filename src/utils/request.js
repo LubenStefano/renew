@@ -72,7 +72,7 @@ export const request = {
         throw new Error('This email is already registered. Please log in or use a different email.');
       }
       handleError(error, 'Failed to register user.');
-      throw error; // Ensure the error propagates to the caller
+      throw error; 
     }
   },
 
@@ -87,10 +87,10 @@ export const request = {
         handleError(new Error("User data not found in Firestore."), 'Failed to log in user.');
         throw new Error("User data not found in Firestore.");
       }
-      return { id: user.uid, email: user.email, ...userDoc.data() }; // Return full user data
+      return { id: user.uid, email: user.email, ...userDoc.data() }; 
     } catch (error) {
       handleError(error, 'Failed to log in user.');
-      throw error; // Ensure the error propagates to the caller
+      throw error; 
     }
   },
 
@@ -222,19 +222,17 @@ export const request = {
   async deleteUser(userId) {
     const { handleError } = useErrorHandler();
     try {
-      // Delete all offers created by the user
+
       const userOffersQuery = query(collection(db, "offers"), where("creator", "==", userId));
       const userOffersSnapshot = await getDocs(userOffersQuery);
       const batch = writeBatch(db);
 
-      // Collect all offer IDs created by the user
       const offerIds = [];
       userOffersSnapshot.forEach(doc => {
         offerIds.push(doc.id);
         batch.delete(doc.ref);
       });
 
-      // Remove the user's offers from other users' savedOffers
       if (offerIds.length > 0) {
         const usersQuery = query(collection(db, "users"), where("savedOffers", "array-contains-any", offerIds));
         const usersSnapshot = await getDocs(usersQuery);
@@ -245,14 +243,11 @@ export const request = {
         });
       }
 
-      // Commit the batch operation
       await batch.commit();
 
-      // Delete the user document
       const userDocRef = doc(db, "users", userId);
       await deleteDoc(userDocRef);
 
-      // Return a confirmation
       return { success: true, message: `User with ID ${userId} and their offers have been deleted.` };
     } catch (error) {
       handleError(error, `Failed to delete user with ID ${userId}.`);

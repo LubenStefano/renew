@@ -2,13 +2,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import styles from './InfiniteCarousel.module.css';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { request } from '../../../utils/request'; // Import request utility
+import { request } from '../../../utils/request'; 
 
 export default function InfiniteCarousel({ autoSlide = true, interval = 10000, itemsToShow = 1 }) {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const carouselRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(itemsToShow); // Start at the first cloned set
+    const [currentIndex, setCurrentIndex] = useState(itemsToShow); 
     const [isTransitioning, setIsTransitioning] = useState(false);
 
     useEffect(() => {
@@ -17,9 +17,9 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
             try {
                 const fetchedProducts = await request.getLatest('offers', 12);
                 setProducts([
-                    ...fetchedProducts.slice(-itemsToShow), // Clone last set
+                    ...fetchedProducts.slice(-itemsToShow), 
                     ...fetchedProducts,
-                    ...fetchedProducts.slice(0, itemsToShow), // Clone first set
+                    ...fetchedProducts.slice(0, itemsToShow), 
                 ]);
             } catch (error) {
                 console.error('Failed to fetch products:', error);
@@ -43,17 +43,17 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
 
     useEffect(() => {
         const carousel = carouselRef.current;
-        if (!carousel || !carousel.firstChild) return; // Ensure carousel and its children exist
-        const itemWidth = carousel.firstChild.offsetWidth + 25; // Include gap in width calculation
+        if (!carousel || !carousel.firstChild) return; 
+        const itemWidth = carousel.firstChild.offsetWidth + 25;
 
         const handleTransitionEnd = () => {
             setIsTransitioning(false);
             if (currentIndex >= products.length - itemsToShow) {
-                setCurrentIndex(itemsToShow); // Reset to the first real set
+                setCurrentIndex(itemsToShow);
                 carousel.style.transition = 'none';
                 carousel.style.transform = `translateX(-${itemWidth * itemsToShow}px)`;
             } else if (currentIndex < itemsToShow) {
-                setCurrentIndex(products.length - itemsToShow * 2); // Reset to the last real set
+                setCurrentIndex(products.length - itemsToShow * 2);
                 carousel.style.transition = 'none';
                 carousel.style.transform = `translateX(-${itemWidth * (products.length - itemsToShow * 2)}px)`;
             }
@@ -72,8 +72,8 @@ export default function InfiniteCarousel({ autoSlide = true, interval = 10000, i
 
     useEffect(() => {
         const carousel = carouselRef.current;
-        if (!carousel || !carousel.firstChild) return; // Ensure carousel and its children exist
-        const itemWidth = carousel.firstChild.offsetWidth + 25; // Include gap in width calculation
+        if (!carousel || !carousel.firstChild) return; 
+        const itemWidth = carousel.firstChild.offsetWidth + 25; 
         carousel.style.transition = 'transform 0.5s ease-in-out';
         carousel.style.transform = `translateX(-${itemWidth * currentIndex}px)`;
     }, [currentIndex, itemsToShow]);

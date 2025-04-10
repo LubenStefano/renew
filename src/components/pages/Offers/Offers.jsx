@@ -15,7 +15,7 @@ export default function Products() {
         navigate(`/offers/details/${id}`);
     };
 
-    const { offers , fetchOffers } = useOffers(); // Ensure `useOffers` exposes a `fetchOffers` method
+    const { offers , fetchOffers } = useOffers(); 
     const [filteredOffers, setFilteredOffers] = useState([]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function Products() {
             });
         }
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, [categoryQuery]);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function Products() {
             setFilteredOffers(offers);
         }
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, [categoryQuery, offers]);
 
     return (

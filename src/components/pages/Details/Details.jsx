@@ -5,11 +5,12 @@ import { useNavigate, useParams } from 'react-router';
 import { useUser } from '../../../context/UserContext';
 import Button from '../../shared/Button/Button';
 import { Skeleton } from 'antd';
+import { useErrorHandler } from '../../../hooks/useErrorHandler';
 
 export default function Details() {
 
   const { id } = useParams();
-  const { offer, creator } = useOffer(id); // Use the updated hook
+  const { offer, creator } = useOffer(id);
   const { user } = useUser(); 
   const { saveOffer } = useSaveOffer();
   const { deleteSavedOffer } = useDeleteSavedOffer();
@@ -27,7 +28,7 @@ export default function Details() {
       setIsSaved(savedOffers.some(savedOffer => savedOffer.id === offer.id));
     }
 
-    return () => controller.abort(); // Cleanup function
+    return () => controller.abort(); 
   }, [savedOffers, offer]);
 
   if (!offer || !creator) {
@@ -87,6 +88,11 @@ export default function Details() {
     navigate(`/profile/${offer.creator}`);
   };
 
+  const handleNoUserClick = () => {
+    const { handleError } = useErrorHandler();
+    handleError(null, "You must be logged in to see the profile.");
+  }
+
   const handleDeleteClick = () => {
     if (window.confirm("Are you sure you want to delete this offer?")) {
       remove(offer.id)
@@ -114,7 +120,10 @@ export default function Details() {
             <div className={styles["product-info"]}>
               <p className={styles["price"]}><b>PRICE:</b> <span>{offer.price}$</span></p>
               <p className={styles["location"]}><b>SELLER:</b></p>
-              <div className={styles["seller-info"]} onClick={profileHandler}>
+              <div
+                className={styles["seller-info"]}
+                onClick={user ? profileHandler : handleNoUserClick}
+              >
                 <img src={creator.profilePicture} className={styles["profile-picture"]} />
                 <p className={styles["seller"]}><span>{creator.name}</span></p>
               </div>
@@ -136,7 +145,7 @@ export default function Details() {
             <h2>CATEGORY:</h2>
             <p>{offer.category}</p>
           </div>
-          {user && ( // Only render buttons if user exists
+          {user && (
             <div className={styles["actions"]}>
               {user?.id === offer.creator ? (
                 <>

@@ -3,7 +3,6 @@ import { notification } from 'antd';
 export function useErrorHandler() {
   const handleError = (error, customMessage) => {
     if (!error) {
-      // Suppress warning if no error is provided and no custom message exists
       if (!customMessage) return;
       console.warn('[Warning]: No error provided to handleError.');
       showError('Error', customMessage || 'An unknown error occurred.');
@@ -12,19 +11,16 @@ export function useErrorHandler() {
 
     console.error('[Error Object]:', error);
 
-    // Extract error message
     const errorMessage =
-      error?.response?.data?.message || // For HTTP errors with a response body
-      error?.message || // For standard JS or Firebase errors
-      error?.statusText || // For HTTP errors without a message
-      customMessage || // Fallback to custom message
-      'An unknown error occurred.'; // Final fallback message
+      error?.response?.data?.message || 
+      error?.message || 
+      error?.statusText || 
+      customMessage ||
+      'An unknown error occurred.'; 
 
-    // Prevent duplicate notifications by checking if the error has already been handled
     if (error._handled) return;
     error._handled = true;
 
-    // HTTP error handling
     if (error?.status && typeof error.status === 'number') {
       const status = error.status;
 
@@ -49,7 +45,7 @@ export function useErrorHandler() {
       }
     }
 
- // Firebase error handling
+// Firebase specific error handling
 else if (error?.code) {
   switch (error.code) {
     case 'auth/invalid-credential':

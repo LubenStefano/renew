@@ -8,7 +8,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
     const updateUser = async (userData) => {
         try {
@@ -17,19 +17,17 @@ export const UserProvider = ({ children }) => {
             }
 
             if (!userData || typeof userData !== "object") {
-                console.warn("The profile has been deleted thus the object is null instead!"); // Graceful handling
+                console.warn("The profile has been deleted thus the object is null instead!");
                 return;
             }
 
-            // Update the user in Firebase
             const userDocRef = doc(db, "users", user.id);
             await setDoc(userDocRef, userData, { merge: true });
 
-            // Fetch the latest user data from Firebase
             const updatedUserDoc = await getDoc(userDocRef);
             if (updatedUserDoc.exists()) {
                 const updatedUser = { id: user.id, ...updatedUserDoc.data() };
-                setUser(updatedUser); // Update the context with the latest user data
+                setUser(updatedUser);
             }
         } catch (error) {
             console.error("Error updating user in context:", error);
@@ -37,12 +35,12 @@ export const UserProvider = ({ children }) => {
     };
 
     const clearUser = () => {
-        setUser(null); // Clear user state with a new reference
+        setUser(null); 
     };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-            setLoading(true); // Start loading
+            setLoading(true); 
             if (firebaseUser) {
                 const userDocRef = doc(db, "users", firebaseUser.uid);
                 const userDoc = await getDoc(userDocRef);
@@ -61,13 +59,13 @@ export const UserProvider = ({ children }) => {
                     setError("User data not found in Firestore.");
                 }
             } else {
-                clearUser(); // Clear user state on logout
+                clearUser(); 
             }
-            setLoading(false); // End loading
+            setLoading(false); 
         });
 
         return () => unsubscribe();
-    }, []); // Dependency array empty means this effect runs only once on mount
+    }, []);
 
     return (
         <UserContext.Provider value={{ user, setUser: updateUser, clearUser, error, setError, loading }}>

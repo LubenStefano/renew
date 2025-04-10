@@ -52,7 +52,7 @@ export default function ProfileHeader({ userById, isCurrentUser }) {
                 <p>gsm: {userById.phone}</p>
                 <p>email: {userById.email}</p>
             </div>
-            {isCurrentUser && ( // Conditionally render edit and delete buttons
+            {isCurrentUser && (
                 <div className={styles["profile-actions"]}>
                     <Button text="EDIT PROFILE" className={styles["edit-profile"]} onClick={editProfile} />
                     <Button text="DELETE PROFILE" className={styles["delete-profile"]} onClick={deleteProfile} />

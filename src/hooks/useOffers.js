@@ -26,15 +26,15 @@ export const useOffers = () => {
 
         fetchOffers(signal);
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, []);
 
-    return { offers, fetchOffers }; // Expose fetchOffers
+    return { offers, fetchOffers }; 
 };
 
 export const useOffer = (offerId) => {
     const [offer, setOffer] = useState(null);
-    const [creator, setCreator] = useState(null); // New state for creator details
+    const [creator, setCreator] = useState(null); 
     const { handleError } = useErrorHandler();
 
     useEffect(() => {
@@ -57,10 +57,10 @@ export const useOffer = (offerId) => {
                 });
         }
 
-        return () => controller.abort(); // Cleanup function
-    }, [offerId]); // Automatically updates `offer` when `offerId` changes
+        return () => controller.abort(); 
+    }, [offerId]); 
 
-    return { offer, creator }; // Return both offer and creator
+    return { offer, creator }; 
 };
 
 export const useCreateOffer = () => {
@@ -73,8 +73,8 @@ export const useCreateOffer = () => {
         }
 
         offerData.createdAt = new Date().toISOString();
-        offerData.creator = user.id; // Store only the user ID
-        offerData.creatorPfp = user.profilePicture; // Store the user's profile picture URL
+        offerData.creator = user.id; 
+        offerData.creatorPfp = user.profilePicture; 
 
         try {
             const createdOffer = await request.create(collectionName, offerData);
@@ -82,14 +82,13 @@ export const useCreateOffer = () => {
             return createdOffer;
         } catch (error) {
             handleError(error, "Failed to create offer.");
-            throw error; // Re-throw the error after handling
+            throw error; 
         }
     };
 
     return { create };
 };
 
-//това е хука
 export const useEditOffer = () => {
     const edit = async (offerId, offerData) => {
         if (!offerId || !offerData) {
@@ -128,7 +127,7 @@ export const useDeleteOffer = () => {
 
 export const useLatestOffers = (count = 10) => {
     const [latestOffers, setLatestOffers] = useState([]);
-    const hasFetched = useRef(false); // Prevent repeated fetching
+    const hasFetched = useRef(false); 
 
     useEffect(() => {
         if (!hasFetched.current) {
@@ -157,7 +156,7 @@ export const useOffersByCategory = (category) => {
                 });
         }
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, [category]);
 
     return { offersByCategory };
@@ -177,7 +176,7 @@ export const useSaveOffer = () => {
             showMessage("success", "Offer saved successfully!", "The offer has been added to your saved list.");
         } catch (error) {
             handleError(error, "Failed to save offer.");
-            throw error; // Re-throw the error after handling
+            throw error; 
         }
     };
 
@@ -200,7 +199,7 @@ export const useSavedOffers = () => {
             });
         }
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, [user]);
 
     return { savedOffers };
@@ -255,7 +254,7 @@ export const useGetOffersByUserId = (userId) => {
             });
         }
 
-        return () => controller.abort(); // Cleanup function
+        return () => controller.abort(); 
     }, [userId]);
 
     return { userOffers };

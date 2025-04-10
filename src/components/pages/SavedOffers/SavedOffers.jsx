@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 export default function SavedOffers() {
     const navigate = useNavigate();
     const { userId } = useParams();
-    const { savedOffers } = useSavedOffers(userId); // Ensure `useSavedOffers` uses AbortController internally
+    const { savedOffers } = useSavedOffers(userId);
 
     const seeProduct = (id) => {
         navigate(`/offers/details/${id}`);

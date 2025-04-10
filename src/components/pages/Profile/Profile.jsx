@@ -21,7 +21,7 @@ export default function Profile() {
     };
 
 
-    const isCurrentUser = user.id === userId; // Check if the profile belongs to the logged-in user
+    const isCurrentUser = user.id === userId; 
 
     return (
         <section className={styles["profile-page"]}>
