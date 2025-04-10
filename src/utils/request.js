@@ -84,7 +84,6 @@ export const request = {
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
       if (!userDoc.exists()) {
-        handleError(new Error("User data not found in Firestore."), 'Failed to log in user.');
         throw new Error("User data not found in Firestore.");
       }
       return { id: user.uid, email: user.email, ...userDoc.data() }; 

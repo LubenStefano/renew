@@ -4,7 +4,6 @@ export function useErrorHandler() {
   const handleError = (error, customMessage) => {
     if (!error) {
       if (!customMessage) return;
-      console.warn('[Warning]: No error provided to handleError.');
       showError('Error', customMessage || 'An unknown error occurred.');
       return;
     }

@@ -41,7 +41,8 @@ export default function EditOffer() {
 
     if (offer.creator !== user.id) {
         navigate('/offers');
-        return <p>You are not authorized to edit this offer.</p>;
+        handleError(null, "You are not authorized to edit this offer.");
+        return;
     }
 
     const handleChange = (e) => {
