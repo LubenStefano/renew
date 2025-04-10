@@ -77,6 +77,12 @@ src/
 - Login securely and access your personalized dashboard.
 - Logout with a single click.
 
+### 📍 Location Page
+- View the location of ReNew offices in Sofia, Plovdiv, and Varna.
+- Select a city from a dropdown menu to dynamically update the map.
+- The map is powered by the **Google Maps API**, providing an interactive and accurate view of office locations.
+- A custom React hook (`useCityMap`) is used to encapsulate the logic for rendering the map and markers, ensuring clean and reusable code.
+
 ---
 
 ## 🏃 How to Run Locally
@@ -145,6 +151,7 @@ ReNew's design prioritizes:
 - **Frontend**: React, Vite, CSS Modules
 - **Backend**: Firebase (Firestore, Authentication)
 - **Hosting**: Vercel
+- **Google Maps API**: Used to display interactive maps with markers for office locations.
 
 ---
 

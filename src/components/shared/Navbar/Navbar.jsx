@@ -18,6 +18,7 @@ export default function Navbar() {
     <>
       <li><NavLink to="/" onClick={onClose} className={({ isActive }) => isActive ? styles.activeStyle : undefined}>HOME</NavLink></li>
       <li><NavLink to="/offers" onClick={onClose} className={({ isActive }) => isActive ? styles.activeStyle : undefined}>PRODUCTS</NavLink></li>
+      <li><NavLink to="/location" onClick={onClose} className={({ isActive }) => isActive ? styles.activeStyle : undefined}>LOCATION</NavLink></li>
       {user ? (
         <>
           <li><NavLink to={`/profile/${user.id}`} onClick={onClose} className={({ isActive }) => isActive ? styles.activeStyle : undefined}>PROFILE</NavLink></li>

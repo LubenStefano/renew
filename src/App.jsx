@@ -19,6 +19,7 @@ import AuthGuard from './Guards/AuthGuard';
 import AlreadyLoggedInGuard from './Guards/AlreadyLoggedInGuard';
 import SavedOffers from './components/pages/SavedOffers/SavedOffers';
 import NotFound from './components/pages/NotFound/NotFound';
+import Location from './components/pages/Location/Location';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/offers" element={<Offers />} />
         <Route path="/offers/:category" element={<Offers />} />
         <Route path="/offers/details/:id" element={<Details />} />
+        <Route path="/location" element={<Location />} />
 
         <Route element={<AuthGuard />}>
           <Route path="/profile/:userId" element={<Profile />} />

@@ -17,7 +17,7 @@ header {
   cursor: pointer;
 }
 
-.logo a{
+.logo a {
   text-decoration: none;
   color: #000;
   transition: 0.2s;
@@ -49,16 +49,20 @@ header nav ul li a {
   header {
     flex-direction: column;
     align-items: flex-start;
-    padding: 16px;
+    padding: 8px;
   }
 
   header nav ul {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .logo {
-    font-size: 36px;
+    font-size: 28px;
+  }
+
+  .navListMobile {
+    font-size: 20px;
   }
 }
 
@@ -67,7 +71,7 @@ header nav ul li a {
 }
 
 .mobileOnly {
-  display: none; /* Hidden by default */
+  display: none;
 }
 
 .navListMobile {
@@ -88,7 +92,7 @@ header nav ul li a {
   }
 
   .mobileOnly {
-    display: block; /* Visible only on phones */
+    display: block;
     position: absolute;
     top: 20px;
     right: 20px;
@@ -96,15 +100,47 @@ header nav ul li a {
   }
 
   .ant-drawer-content {
-    width: 250px !important; /* Reduce the drawer width for smaller screens */
+    width: 250px !important;
   }
 
   .navListMobile li a {
-    color: #000; /* Ensure text is black */
+    color: #000;
     text-decoration: none;
   }
 
   .navListMobile li a:hover {
-    color: #e6aa65; /* Add hover effect */
+    color: #e6aa65;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 4px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .navListMobile {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  header {
+    padding: 12px 24px;
+  }
+
+  .logo {
+    font-size: 38px;
+  }
+
+  header nav ul {
+    gap: 30px;
+  }
+
+  .navListMobile {
+    font-size: 22px;
   }
 }

@@ -16,6 +16,7 @@ export default function () {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/offers">Products</Link></li>
+              <li><Link to="/location">Location</Link></li>
               {!user && (
                 <>
                   <li><Link to="/login">Login</Link></li>
@@ -40,7 +41,7 @@ export default function () {
             <br />
             Phone: +359 887 4567
             <br />
-            Address: 123 Bulgarian Bul Lane, Sofia;
+            Address: Sofia Center, 1000 Sofia, Serdika;
           </p>
         </div>
         <div className={styles['social-links']}>
