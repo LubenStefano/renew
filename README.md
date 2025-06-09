@@ -7,7 +7,15 @@ ReNew is your go-to platform for buying and selling secondhand products. Whether
 Check out the app live at: [https://renew-eta.vercel.app/](https://renew-eta.vercel.app/)
 
 ---
+## 📷 Preview
 
+![image](https://github.com/user-attachments/assets/978abeb2-11a3-46b5-8def-a426b41790f8)
+
+![image](https://github.com/user-attachments/assets/cc10a71e-2191-4e1c-aae2-ecd6a35dd1a1)
+
+![image](https://github.com/user-attachments/assets/1a85c450-cccd-4021-9e55-4bbaaeaa61b2)
+
+---
 ## 🛠️ Features
 
 ReNew is built with love and React! Here's what makes it awesome:
